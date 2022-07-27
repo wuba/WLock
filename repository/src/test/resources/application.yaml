@@ -1,0 +1,22 @@
+
+spring:
+  application:
+    name: WLock
+  datasource:
+    dynamic:
+      primary: online
+      datasource:
+        offline:
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://test.db.cn:10000/test?useUnicode=true&amp;characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
+          username: user
+          password:
+        online:
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://test.db.cn:10000/test?useUnicode=true&amp;characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
+          username: user
+          password:
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

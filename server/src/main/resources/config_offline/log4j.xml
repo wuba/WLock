@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <properties>
+        <property name="LOG_HOME">../log/</property>
+        <property name="FILE_NAME">wlock</property>
+        <property name="TRACE_LOG">trace</property>
+        <property name="LOG_LEVEL">info</property>
+    </properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %p %C{1.}.%M:%L [%t] %m%n"/>
+        </Console>
+
+        <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${LOG_HOME}/${FILE_NAME}.log"
+                                 filePattern="${LOG_HOME}/${FILE_NAME}-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %p %C{1.}.%M:%L [%t] [%tid] %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="6"/>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="serverLogFile" fileName="${LOG_HOME}/server.log"
+                                 filePattern="${LOG_HOME}/collector/server-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="6"/>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="groupLogFile" fileName="${LOG_HOME}/group.log"
+                                 filePattern="${LOG_HOME}/collector/group-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="6"/>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="keyLogFile" fileName="${LOG_HOME}/key.log"
+                                 filePattern="${LOG_HOME}/collector/key-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="6"/>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="keyGroupLogFile" fileName="${LOG_HOME}/keygroup.log"
+                                 filePattern="${LOG_HOME}/collector/keygroup-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="6"/>
+        </RollingRandomAccessFile>
+
+        <RollingFile name="lockTraceLog" fileName="${LOG_HOME}/${TRACE_LOG}.log"
+                     filePattern="${LOG_HOME}/${TRACE_LOG}-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>%m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="6"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <root level="info">
+            <appender-ref ref="Console"/>
+        </root>
+        <Logger name="com.wuba" level="${LOG_LEVEL}">
+            <AppenderRef ref="RollingRandomAccessFile"/>
+        </Logger>
+
+        <Logger name="lockTraceLog" level="${LOG_LEVEL}" additivity="false">
+            <AppenderRef ref="lockTraceLog"/>
+        </Logger>
+
+        <Logger name="ServerLog" level="${LOG_LEVEL}" additivity="false">
+            <AppenderRef ref="serverLogFile"/>
+        </Logger>
+        <Logger name="GroupLog" level="${LOG_LEVEL}" additivity="false">
+            <AppenderRef ref="groupLogFile"/>
+        </Logger>
+        <Logger name="KeyLog" level="${LOG_LEVEL}" additivity="false">
+            <AppenderRef ref="keyLogFile"/>
+        </Logger>
+        <Logger name="KeyGroupLog" level="${LOG_LEVEL}" additivity="false">
+            <AppenderRef ref="keyGroupLogFile"/>
+        </Logger>
+    </Loggers>
+</Configuration>
