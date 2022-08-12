@@ -10,7 +10,7 @@
 ```shell
 mvn clean install
 ```
-2. **创建数据表** - [相关 SQL](document/sql/create.sql)
+2. **创建数据表** - [相关 SQL](sql/create.sql)
 3. **部署注册中心并启动**
 ```shell
 cd target
