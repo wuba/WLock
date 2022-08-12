@@ -181,5 +181,5 @@ AcquireLockResult writeResult = writeLock.tryAcquireLock(1000 * 60, 1000 * 60);
 WLock项目基于[Apache License 2.0](./LICENSE)协议开源
 
 ## 联系我们
-<img src="document/img/wlock-wechat.jpg"/>  
-欢迎添加上面微信账号，加入wlock技术讨论群~
+<img src="document/img/wlock-wechat.png"/>  
+欢迎添加58技术微信账号，加入wlock技术讨论群~
