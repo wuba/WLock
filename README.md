@@ -126,7 +126,7 @@ WDistributedLock wdLock = wlockClient.newDistributeLock(lockKey);
 **参数说明 :**  
 **keyHash** ：秘钥名称,从秘钥配置中获取  
 **registryIp** ：注册中心 ip  
-**registryIport** ：注册中心端口  
+**registryPort** ：注册中心端口  
 **lockKey** ：分布式锁名称  
 **WDistributedLock** ：分布式锁对象封装
 
