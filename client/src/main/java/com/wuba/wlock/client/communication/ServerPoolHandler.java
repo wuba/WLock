@@ -31,6 +31,7 @@ import com.wuba.wlock.client.protocol.extend.CommonWlockResponse;
 import com.wuba.wlock.client.registryclient.entity.ClientKeyEntity;
 import com.wuba.wlock.client.registryclient.entity.NodeAddr;
 import com.wuba.wlock.client.registryclient.registrykey.RegistryKey;
+import com.wuba.wlock.client.service.HeartbeatService;
 import com.wuba.wlock.client.util.TimeUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,6 +61,7 @@ public class ServerPoolHandler {
 		this.wlockClient = wlockClient;
 		this.registryKey = wlockClient.getRegistryKey();
 		initSeverPool();
+		HeartbeatService.getHbService().start();
 	}
 	
 	public void initSeverPool() throws IOException, ExecutionException, InterruptedException {
