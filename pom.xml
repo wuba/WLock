@@ -30,6 +30,7 @@
     <name>wlock</name>
 
     <properties>
+        <wlock.version>1.0.0</wlock.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <spring-boot.version>2.6.6</spring-boot.version>
@@ -81,7 +82,6 @@
                 <artifactId>wpaxos.core</artifactId>
                 <version>${wpaxos.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.rocksdb</groupId>
                 <artifactId>rocksdbjni</artifactId>
@@ -233,6 +233,30 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>zip</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>install</phase>
+                        <configuration>
+                            <target>
+                                <mkdir dir="${project.build.directory}/../../target/"/>
+                                <zip destfile="${project.build.directory}/../../target/wlock-${wlock.version}.zip">
+                                    <fileset dir="${project.build.directory}/../../target/">
+                                        <include name="client/"/>
+                                        <include name="registry/"/>
+                                        <include name="server/"/>
+                                    </fileset>
+                                </zip>
+                            </target>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -15,4 +15,4 @@
 # ----------------------------------------------------------------------------
 
 #!/bin/sh
-nohup java -jar registry-1.0.0.jar &
+nohup java -jar registry-1.0.0.jar --spring.config.location=config/application.yml &

@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ----------------------------------------------------------------------------
-#! /bin/bash
 
-dir="$(cd "$( dirname "$0" )" && pwd)"
-rootpath="$(cd "$dir/.." && pwd)"
-THEDAY1=`date -d "1 days ago" +%Y-%m-%d`
-THEDAY5=`date -d "3 days ago" +%Y-%m-%d`
-
-
-LogPath=$rootpath/log
-
-rm -f $LogPath/wlock-$THEDAY5-1.log
-rm -f $LogPath/trace-$THEDAY1-1.log
-
-
+#!/bin/sh
+PID=`pgrep -f registry`
+kill -9 ${PID}

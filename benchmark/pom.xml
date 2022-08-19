@@ -83,6 +83,7 @@
                 <executions>
                     <execution>
                         <phase>package</phase>
+                        <id>client</id>
                         <goals>
                             <goal>shade</goal>
                         </goals>
