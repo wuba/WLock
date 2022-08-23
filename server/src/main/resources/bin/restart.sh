@@ -38,10 +38,6 @@ sh ./rshutdown.sh $0 $1 $2 $3 $4
 dir="$(cd "$( dirname "$0" )" && pwd)"
 rootpath="$(cd "$dir/.." && pwd)"
 SERVICE_NAME=$1
-OTHER_SCF_CONFIG=""
-for((i=2; i<=$#; i++)); do
-  OTHER_SCF_CONFIG=$OTHER_SCF_CONFIG" "${!i}
-done
 
 #if this service is not shutwodn Please shutdown
 SERVICE_DIR=`dirname "$0"`
@@ -118,13 +114,8 @@ done
 # main class
 MAIN_CLASS=com.wuba.wlock.server.bootstrap.Main
 
-#java $JAVA_OPTS -classpath $CLASS_PATH -Duser.dir=$DIR $SYSTEM_PROPERTY $MAIN_CLASS $OTHER_SCF_CONFIG -Dscf.service.name=$SERVICE_NAME &
 
-#java $JAVA_OPTS -classpath $CLASS_PATH -Duser.dir=$DIR $SYSTEM_PROPERTY $MAIN_CLASS  $OTHER_SCF_CONFIG -Dscf.service.name=$SERVICE_NAME >> ../log/tt.log 2>&1 &
-
-#java -Xmx8g -Xms8g -XX:UserG1GC -XX:MaxGCPauseMillis=200 -classpath $CLASS_PATH -Duser.dir=$DIR $SYSTEM_PROPERTY $MAIN_CLASS  $OTHER_SCF_CONFIG -Dscf.service.name=$SERVICE_NAME >> ../log/tt.log 2>&1 &
-
-java -Xmx8g -Xms8g -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:NewRatio=2 -XX:+PrintClassHistogram -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintHeapAtGC -Xloggc:../log/gc.log -XX:SurvivorRatio=8 -XX:MaxGCPauseMillis=200 -classpath $CLASS_PATH -Duser.dir=$DIR -Dport=$PORT $SYSTEM_PROPERTY $MAIN_CLASS  $OTHER_SCF_CONFIG -Dscf.service.name=$SERVICE_NAME >> /dev/null 2>&1 &
+java -Xmx8g -Xms8g -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:NewRatio=2 -XX:+PrintClassHistogram -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintHeapAtGC -Xloggc:../log/gc.log -XX:SurvivorRatio=8 -XX:MaxGCPauseMillis=200 -classpath $CLASS_PATH -Duser.dir=$DIR -Dport=$PORT $SYSTEM_PROPERTY $MAIN_CLASS >> /dev/null 2>&1 &
 
 echo pid:$!
 
