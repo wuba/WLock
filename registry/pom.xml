@@ -126,6 +126,14 @@
                                 <copy file="${project.basedir}/src/main/resources/logback-spring.xml"
                                       tofile="${project.basedir}/../target/registry/config/logback-spring.xml"
                                       overwrite="true"/>
+                                <zip destfile="${project.basedir}/../target/registry.zip">
+                                    <fileset dir="${project.basedir}/../target/registry">
+                                        <include name="bin/"/>
+                                        <include name="config/"/>
+                                        <include name="registry-${wlock.version}.jar"/>
+                                    </fileset>
+                                </zip>
+                                <delete dir="${project.basedir}/../target/registry" includeemptydirs="true"/>
                             </target>
                         </configuration>
                         <goals>
