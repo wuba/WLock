@@ -50,7 +50,7 @@
         <junit.version>4.13.1</junit.version>
         <guava.version>31.1-jre</guava.version>
         <mysql-connector.version>8.0.28</mysql-connector.version>
-        <wpaxos.version>1.0.0-Release</wpaxos.version>
+        <wpaxos.version>1.0.2-Release</wpaxos.version>
         <mybatis-plus-boot-starter.version>3.5.1</mybatis-plus-boot-starter.version>
         <dynamic-datasource-spring-boot-starter.version>3.5.1</dynamic-datasource-spring-boot-starter.version>
         <redisson.version>3.17.3</redisson.version>
