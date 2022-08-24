@@ -68,23 +68,22 @@ CPU：20 x Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz
 2. 对可靠性要求比较高，同时锁并发高于500的场景，可使用WLock；
 
 ## 快速使用
-```shell
-# 创建集群,添加节点,节点上线相关操作都可以通过 UI 快速完成
-http://localhost:8888/swagger-ui/index.html
+
+
+#### 本地运行 WLock
+WLock 运行在所有主流操作系统上，只需要安装 Java JDK 8 或更高版本。要检查，请运行`java -version`：
 ```
+$ java -version
+java version "1.8.0_121"
+```
+
 #### 服务初始化步骤 : 
-1. **项目打包 :** 
-
-```shell
-mvn clean install
-```
-
-2. **创建数据表** - [相关 SQL](document/sql/create.sql)
-3. **部署注册中心并启动** - [详情](document/DEPLOY.md)
-4. **创建集群** - [详情](document/DEPLOY.md)
-5. **添加节点** - [详情](document/DEPLOY.md)
-6. **节点上线** - [详情](document/DEPLOY.md)
-7. **服务端初始化** - [详情](document/DEPLOY.md)
+1. **创建数据表** - [相关 SQL](document/sql/create.sql)
+2. **部署注册中心并启动** - [详情](document/DEPLOY.md)
+3. **创建集群** - [详情](document/DEPLOY.md)
+4. **添加节点** - [详情](document/DEPLOY.md)
+5. **节点上线** - [详情](document/DEPLOY.md)
+6. **服务端初始化** - [详情](document/DEPLOY.md)
 
 
 #### 客户端初始化

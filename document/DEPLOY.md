@@ -6,15 +6,22 @@
 > 创建集群,添加节点,节点上线相关操作都可以通过 UI 快速完成 : http://localhost:8888/swagger-ui/index.html
 > 		下方列出的方式是使用 curl 直接调用接口
 
-1. **项目打包 :** 
-```shell
-mvn clean install
+
+1. **创建数据表** - [相关 SQL](sql/create.sql)
+2. **调整数据库配置**
 ```
-2. **创建数据表** - [相关 SQL](sql/create.sql)
-3. **部署注册中心并启动**
-```shell
 cd target
-sh registry/start.sh
+unzip registry.zip
+cd registry
+# 编辑配置文件 : 
+#		设置配置中的数据库 url 以及用户名,密码.
+#		设置配置中的redis ip 端口以及密码.
+vi config/application.yml
+```
+3. **部署注册中心并启动**
+
+```shell
+sh bin/start.sh
 ```
 4. **创建集群**
 
@@ -57,5 +64,6 @@ curl -X POST "http://localhost:8888/wlock/server/online?clusterName=demo_01&serv
 
 ```shell
 cd target
-sh server/start.sh
+unzip server.zip
+sh server/bin/start.sh
 ```
