@@ -19,7 +19,7 @@ server:
 
 registry:
   env: offline
-  token:
+  token: 123
 spring:
   application:
     name: WLock
@@ -41,9 +41,9 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
-redis_ip: localhost
-redis_port: 2000
-redis_auth: password
+redis_ip: test-tegsrv01.rdb.58dns.org
+redis_port: 50209
+redis_auth: 73b4987a31527726
 
 tcp:
   workerCount: 32

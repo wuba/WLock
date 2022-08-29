@@ -22,22 +22,14 @@
 ### ====================================================================== ###
 
 
-USAGE="Usage: shutdown.sh"
-
-# get arguments
-dir="$(cd "$( dirname "$0" )" && pwd)"
-rootpath="$(cd "$dir/.." && pwd)"
-SERVICE_NAME=`echo $rootpath | awk -F "/" '{print $NF}'`
-
-DIR=`dirname "$0"`
-DIR=`cd "$bin"; pwd`
-PID_FILE="$DIR"/../tmp/pid/$SERVICE_NAME
+SERVICE_NAME=wlock
+DIR=`pwd`
+PID_FILE="$DIR"/server/tmp/pid/$SERVICE_NAME
 
 if [ ! -e $PID_FILE ]; then
   echo "pid file($PID_FILE) not exits"
   exit 1
 fi
-
 echo "kill pid: `cat $PID_FILE`"
 kill -15 `cat $PID_FILE`
 rm -rf $PID_FILE

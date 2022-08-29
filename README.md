@@ -89,11 +89,11 @@ java version "1.8.0_121"
 #### 客户端初始化
 
 **1. 注册秘钥**
+
 ```shell
 # 访问注册中心节点通过 swagger 快速注册秘钥
 http://localhost:8888/swagger-ui/index.html#/key-rest/addKeyUsingPOST
 ```
-
 
 **2. 依赖客户端jar包**
 

@@ -238,7 +238,7 @@ public class RegisterChannel {
 			try {
 				future.sync();
 			} catch (Exception e) {
-				logger.error("sync to registry error .ip " + ip);
+				logger.error("sync to registry error ip " + ip);
 			}
 			if (future.isSuccess()) {
 				return future.getChannel();

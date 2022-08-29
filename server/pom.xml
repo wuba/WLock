@@ -119,7 +119,7 @@
                                 <copydir src="${project.basedir}/src/main/resources/bin"
                                          dest="${project.basedir}/target/server/bin" forceoverwrite="true"/>
                                 <mkdir dir="${project.basedir}/target/server/config"/>
-                                <copydir src="${project.basedir}/src/main/resources/config_online"
+                                <copydir src="${project.basedir}/src/main/resources/config"
                                          dest="${project.basedir}/target/server/config" forceoverwrite="true"/>
                                 <mkdir dir="${project.basedir}/target/server/db"/>
                                 <mkdir dir="${project.basedir}/target/server/log"/>
@@ -132,11 +132,6 @@
                                         <include name="lib/"/>
                                     </fileset>
                                 </zip>
-
-<!--                                <mkdir dir="${project.basedir}/../target/server"/>-->
-<!--                                <copydir src="${project.basedir}/target/server"-->
-<!--                                         dest="${project.basedir}/../target/server" forceoverwrite="true"/>-->
-
                             </target>
                         </configuration>
                         <goals>
