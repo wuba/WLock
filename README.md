@@ -78,7 +78,8 @@ java version "1.8.0_121"
 ```
 
 #### 服务初始化步骤 : 
-1. **创建数据表** - [相关 SQL](document/sql/create.sql)
+1. **创建数据表** 
+	- wlock 注册中心,默认使用 H2 数据库,如果想使用 mysql,请参考 [相关 SQL](document/sql/create.sql),快速启动可以跳过该步骤.
 2. **部署注册中心并启动** - [详情](document/DEPLOY.md)
 3. **创建集群** - [详情](document/DEPLOY.md)
 4. **添加节点** - [详情](document/DEPLOY.md)
