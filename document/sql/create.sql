@@ -37,21 +37,24 @@ UNIQUE KEY `uniq_g_c` (`group_id`,`cluster_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='server节点与分组表';
 
 CREATE TABLE `t_key` (
-`id` bigint(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '序号',
-`name` varchar(255) NOT NULL COMMENT '秘钥名',
-`hash_key` varchar(255) NOT NULL,
-`cluster_id` varchar(100) NOT NULL COMMENT '集群名',
-`org_id` varchar(255) NOT NULL COMMENT '部门id',
-`description` varchar(255) DEFAULT NULL COMMENT '描述',
-`creator` varchar(255) NOT NULL COMMENT '创建人',
-`owners` varchar(255) NOT NULL COMMENT '负责人',
-`create_time` datetime NOT NULL COMMENT '创建时间',
-`group_id` int(10) DEFAULT NULL COMMENT '分组ID',
-`qps` int(11) NOT NULL COMMENT 'qps',
-`auto_renew` int(10) NOT NULL DEFAULT '0' COMMENT '是否自动续约',
-PRIMARY KEY (`id`),
-UNIQUE KEY `uniq_h` (`hash_key`),
-UNIQUE KEY `uniq_m` (`name`)
+  `id` bigint(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `name` varchar(255) NOT NULL COMMENT '秘钥名',
+  `hash_key` varchar(255) NOT NULL,
+  `cluster_id` varchar(100) NOT NULL COMMENT '集群名',
+  `org_id` varchar(255) NOT NULL COMMENT '部门id',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `creator` varchar(255) COMMENT '创建人',
+  `owners` varchar(255) COMMENT '负责人',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `group_id` int(10) DEFAULT NULL COMMENT '分组ID',
+  `qps` int(11) NOT NULL COMMENT 'qps',
+  `auto_renew` int(10) NOT NULL DEFAULT '0' COMMENT '是否自动续约',
+  `multi_group` tinyint(4) DEFAULT '0' COMMENT '多分组标志0单分组，1多分组',
+  `group_ids` varchar(255) DEFAULT NULL COMMENT '分组列表，多分组才会使用',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_h` (`hash_key`),
+  UNIQUE KEY `uniq_m` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=294 DEFAULT CHARSET=utf8 COMMENT='秘钥表';
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='秘钥表';
 
 CREATE TABLE `t_migrate` (
@@ -71,16 +74,17 @@ KEY `idx_cluster` (`cluster`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='秘钥迁移表';
 
 CREATE TABLE `t_migrate_process` (
-`id` bigint(18) NOT NULL AUTO_INCREMENT COMMENT '主键',
-`state` tinyint(4) NOT NULL COMMENT '迁移状态',
-`key_hash` varchar(255) NOT NULL COMMENT '秘钥hash',
-`migrate_key_version` bigint(18) NOT NULL COMMENT 't_migrate 对应的 version',
-`is_end` tinyint(4) NOT NULL COMMENT '是否完成 : 0,1',
-`groups` varchar(255) NOT NULL COMMENT '迁移的 group',
-`create_time` datetime NOT NULL COMMENT '创建时间',
-`update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-PRIMARY KEY (`id`),
-KEY `idx_key_hash` (`key_hash`)
+  `id` bigint(18) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `state` tinyint(4) NOT NULL COMMENT '迁移状态',
+  `key_hash` varchar(255) NOT NULL COMMENT '秘钥hash',
+  `migrate_key_version` bigint(18) NOT NULL COMMENT 't_migrate 对应的 version',
+  `is_end` tinyint(4) NOT NULL COMMENT '是否完成 : 0,1',
+  `groups` varchar(255) NOT NULL COMMENT '迁移的 group',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `node_list` varchar(500) DEFAULT NULL COMMENT '迁移节点列表',
+  PRIMARY KEY (`id`),
+  KEY `idx_key_hash` (`key_hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='迁移表';
 
 CREATE TABLE `t_server` (

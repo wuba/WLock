@@ -78,7 +78,8 @@ java version "1.8.0_121"
 ```
 
 #### 服务初始化步骤 : 
-1. **创建数据表** - [相关 SQL](document/sql/create.sql)
+1. **创建数据表** 
+	- wlock 注册中心,默认使用 H2 数据库,如果想使用 mysql,请参考 [相关 SQL](document/sql/create.sql),快速启动可以跳过该步骤.
 2. **部署注册中心并启动** - [详情](document/DEPLOY.md)
 3. **创建集群** - [详情](document/DEPLOY.md)
 4. **添加节点** - [详情](document/DEPLOY.md)
@@ -89,11 +90,11 @@ java version "1.8.0_121"
 #### 客户端初始化
 
 **1. 注册秘钥**
+
 ```shell
 # 访问注册中心节点通过 swagger 快速注册秘钥
 http://localhost:8888/swagger-ui/index.html#/key-rest/addKeyUsingPOST
 ```
-
 
 **2. 依赖客户端jar包**
 

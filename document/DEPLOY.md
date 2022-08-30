@@ -56,14 +56,16 @@ curl -X POST "http://localhost:8888/wlock/server/add?clusterName=demo_01&ip=127.
 ```shell
 #  url参数 : 
 # 	集群名 
-# 	需要上线的服务序列 id 列表
+# 	需要上线的服务序列 id 列表 : 注意 上线时候使用的节点 id 通过 list 查询集群节点,使用返回的主键 id 作为该参数 ,多个节点使用逗号分割
 curl -X POST "http://localhost:8888/wlock/server/online?clusterName=demo_01&serverIdList=1" -H "accept: */*" -H "token: token" -d ""
 ```
 7. **服务端初始化**
 > 按照添加节点进行项目启动 ,启动节点数量和添加节点数量相同
 
 ```shell
+# 1. 执行初始化之前请确认 config 下的registry.properties 中的 registryServerIp配置是不是注册中心 ip
+# 2. 确认 server.properties 配置的 listenPort 是不是注册中心新增节点的 tcp 端口,二者需要保持一致
 cd target
-unzip server.zip
+unzip -d ./server server.zip
 sh server/bin/start.sh
 ```

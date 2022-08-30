@@ -85,7 +85,7 @@ public class NodeService {
 		ServerResp serverResp = null;
 		for (ServerDO serverDO : serverDOList) {
 			serverResp = new ServerResp();
-			serverResp.setId(serverDO.getId());
+			serverResp.setId(String.valueOf(serverDO.getId()));
 			serverResp.setServer(serverDO.getServerAddr());
 			serverResp.setTelnetPort(serverDO.getTelnetPort());
 			serverResp.setPaxosPort(serverDO.getPaxosPort());
@@ -232,11 +232,6 @@ public class NodeService {
 			throw new ServiceException(ExceptionConstant.SERVER_EXCEPTION);
 		}
 
-		if ((serverList != null &&
-				(serverList.size() + idList.size()) < 3) ||
-				(serverList == null && (idList.size() < 3 ))) {
-			throw new ServiceException(ExceptionConstant.ONLINE_SERVER_ERROR);
-		}
 		migrateStateCheck(env);
 		try {
 			serverRepository.onlineServerByIds(env, clusterName, idList);
@@ -260,6 +255,7 @@ public class NodeService {
 				throw new ServiceException(ExceptionConstant.MIGRATE_STATE_LIMIT_ONLINE_OFFLINE);
 			}
 		} catch (Exception e) {
+			log.error("migrateStateCheck", e);
 			throw new ServiceException(ExceptionConstant.SERVER_EXCEPTION);
 		}
 	}
@@ -285,10 +281,6 @@ public class NodeService {
 		}
 		migrateStateCheck(env);
 
-		if (serverList != null && serverList.size() != idList.size() &&
-				(serverList.size() - idList.size()) < 3) {
-			throw new ServiceException(ExceptionConstant.OFFLINE_SERVER_ERROR);
-		}
 		try {
 			serverRepository.offlineServerByIds(env, clusterName, idList);
 			clusterRepository.updateClusterVersionByClusterName(env, System.currentTimeMillis(), clusterName);

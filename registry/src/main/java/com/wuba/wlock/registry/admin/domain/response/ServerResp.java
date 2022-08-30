@@ -17,7 +17,7 @@ package com.wuba.wlock.registry.admin.domain.response;
 
 public class ServerResp {
 
-	private long id;
+	private String id;
 	
 	private String server;
 	
@@ -33,11 +33,11 @@ public class ServerResp {
 	
 	private int sequenceId;
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
