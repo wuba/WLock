@@ -18,10 +18,12 @@ package com.wuba.wlock.registry.admin.domain.request;
 
 import com.wuba.wlock.registry.admin.constant.ValidationConstant;
 import com.wuba.wlock.registry.admin.validators.ValidationCheck;
+import lombok.Data;
 
+@Data
 public class KeyInfoReq {
 
-	@ValidationCheck(allowEmpty = true, regexExpression = ValidationConstant.REGEX_NAME, filedDescription = "集群名")
+	@ValidationCheck(allowEmpty = true, regexExpression = ValidationConstant.REGEX_NAME, filedDescription = "秘钥名")
 	private String keyName;
 	
 	@ValidationCheck(allowEmpty = true, filedDescription = "负责人")
@@ -35,45 +37,5 @@ public class KeyInfoReq {
 	
 	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "每页条数")
 	private int pageSize;
-
-	public String getKeyName() {
-		return keyName;
-	}
-
-	public void setKeyName(String keyName) {
-		this.keyName = keyName;
-	}
-
-	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
-
-	public String getOrgId() {
-		return orgId;
-	}
-
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
-	}
-
-	public int getPageNumber() {
-		return pageNumber;
-	}
-
-	public void setPageNumber(int pageNumber) {
-		this.pageNumber = pageNumber;
-	}
-
-	public int getPageSize() {
-		return pageSize;
-	}
-
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
 	
 }

@@ -34,48 +34,47 @@ import java.util.concurrent.*;
 public class ClientVersionManager {
     private static final long DEADLINE_MILLISECOND = 10800000; // 3小时
     private static final String MAP_NAME = "wlock_client_version_map";
-    
-    ExecutorService threadPool = new ThreadPoolExecutor(2, 2,0L, TimeUnit.MILLISECONDS,
+
+    ExecutorService threadPool = new ThreadPoolExecutor(2, 2, 0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<Runnable>(), new ThreadRenameFactory("ClientVersionManager-Thread"));
 
     @Autowired
     RedisUtil redisUtil;
 
     public void offer(VersionMessage message) {
-        threadPool.submit(new Runnable() {
-            @Override
-            public void run() {
-                if (message != null) {
-                    try {
+        threadPool.submit(() -> {
+            if (message != null) {
+                try {
+                    if (redisUtil.isUseRedis()) {
                         List<VersionMessage> messages = redisUtil.getMessagesFromRedis(MAP_NAME, message.getKey(), VersionMessage.class);
                         messages = updateVersion(messages, message);
                         String jsonString = JSON.toJSONString(messages);
                         redisUtil.hset(MAP_NAME, message.getKey(), jsonString);
-                    } catch (Exception e) {
-                        log.error("put message {} to redis failed, {}", message.toString(), e);
                     }
+                } catch (Exception e) {
+                    log.error("put message {} to redis failed, {}", message.toString(), e);
                 }
             }
         });
     }
 
     public void remove(RemoveVersion removeVersion) {
-        threadPool.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    removeVersion(removeVersion.getHashKey(), removeVersion.getIp(), removeVersion.getPort());
-                } catch (Exception e) {
-                    log.error(String.format("put message %s to redis failed, {}", removeVersion.toString()), e);
-                }
+        threadPool.submit(() -> {
+            try {
+                removeVersion(removeVersion.getHashKey(), removeVersion.getIp(), removeVersion.getPort());
+            } catch (Exception e) {
+                log.error(String.format("put message %s to redis failed, {}", removeVersion.toString()), e);
             }
         });
     }
 
 
     private void removeVersion(final String key, final String ip, final int port) {
+        if (!redisUtil.isUseRedis()) {
+            return;
+        }
         String address = ip + ":" + port;
-        String version = redisUtil.hget(MAP_NAME, key);
+        String version = redisUtil.hGet(MAP_NAME, key);
         if (version == null) {
             return;
         }
@@ -91,7 +90,7 @@ public class ClientVersionManager {
                 tmp.add(message);
             }
         }
-        if (needUpdate) {
+        if (needUpdate && redisUtil.isUseRedis()) {
             log.info("client {} close, remove version", address);
             redisUtil.hset(MAP_NAME, key, JSON.toJSONString(tmp));
         }

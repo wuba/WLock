@@ -70,10 +70,12 @@ public class ServerService {
     public ServerResult<GetRegistryKeyQpsRes> getKeyQps(String cluster, long version) {
         ServerResult<GetRegistryKeyQpsRes> result = new ServerResult<>();
         try {
-            String qpsVersion = redisUtil.getValue(RedisKeyConstant.getClusterQpsVersion(cluster));
             long redisVersion = -1;
-            if (StringUtils.isNotEmpty(qpsVersion)) {
-                redisVersion = Long.parseLong(qpsVersion);
+            if(redisUtil.isUseRedis()) {
+                String qpsVersion = redisUtil.getValue(RedisKeyConstant.getClusterQpsVersion(cluster));
+                if (StringUtils.isNotEmpty(qpsVersion)) {
+                    redisVersion = Long.parseLong(qpsVersion);
+                }
             }
 
             GetRegistryKeyQpsRes getRegistryKeyQpsRes = new GetRegistryKeyQpsRes();
@@ -114,18 +116,19 @@ public class ServerService {
         String clusterId = serverDO.getClusterId();
         res.setClusterName(clusterId);
         res.setPaxosServer(serverDO.getServerIp() + GetPaxosConfRes.SEP + serverDO.getPaxosPort());
-        String versionString = redisUtil.getValue(RedisKeyConstant.getPaxosConfigVersion(clusterId));
-        if (StringUtils.isNotEmpty(versionString)) {
-            int redisVersion = Integer.parseInt(versionString);
-            if (redisVersion <= getPaxos.getVersion()) {
+        if (redisUtil.isUseRedis()) {
+            String versionString = redisUtil.getValue(RedisKeyConstant.getPaxosConfigVersion(clusterId));
+            if (StringUtils.isNotEmpty(versionString)) {
+                int redisVersion = Integer.parseInt(versionString);
+                if (redisVersion <= getPaxos.getVersion()) {
+                    res.setVersion(redisVersion);
+                    result.setResult(res);
+                    result.setStatus(ServerResult.NO_CHANGE);
+                    return result;
+                }
                 res.setVersion(redisVersion);
-                result.setResult(res);
-                result.setStatus(ServerResult.NO_CHANGE);
-                return result;
             }
-            res.setVersion(redisVersion);
         }
-        
         ClusterDO clusterDO = clusterRepository.getClusterByClusterName(Environment.env(), clusterId);
         res.setGroupCount(clusterDO.getGroupCount());
         List<ServerDO> serverDos = serverRepository.getServerByClusterId(Environment.env(), clusterId);
@@ -311,7 +314,7 @@ public class ServerService {
                 groupServerRefRepository.batchDeleteGroupServer(Environment.env(), ids);
                 needPushClient = true;
             }
-            if (!groupVersion.isEmpty()) {
+            if (!groupVersion.isEmpty() && redisUtil.isUseRedis()) {
                 for (Map.Entry<Integer, Long> entry : groupVersion.entrySet()) {
                     redisUtil.setValueAndExpire(RedisKeyConstant.getGroupVersionKey(clusterId, entry.getKey()), entry.getValue().toString() , EXPIRE_DEFAULT);
                 }
@@ -323,7 +326,7 @@ public class ServerService {
         } catch (Exception e) {
             log.info("cluster {} bind group to master error:", clusterId, e);
         }
-        if (needPushClient) {
+        if (needPushClient && redisUtil.isUseRedis()) {
             // 先清理下redis中的配置
             delClusterMasterGroupDistributeFromRedis(clusterId);
             log.info("cluster {} group master changed, push to client!", clusterId);
@@ -335,11 +338,14 @@ public class ServerService {
     }
 
     private long getRedisVersion(String cluster, int group) {
-        String value = redisUtil.getValue(RedisKeyConstant.getGroupVersionKey(cluster, group));
-        if (Strings.isNullOrEmpty(value)) {
-            return -1;
+        if (redisUtil.isUseRedis()) {
+            String value = redisUtil.getValue(RedisKeyConstant.getGroupVersionKey(cluster, group));
+            if (Strings.isNullOrEmpty(value)) {
+                return -1;
+            }
+            return Long.parseLong(value);
         }
-        return Long.parseLong(value);
+        return -1;
     }
 
     private GroupServerRefDO buildGroupServerRefDO(String clusterId, int groupId, String serverAddr, long version) {
@@ -354,8 +360,10 @@ public class ServerService {
     }
 
     public void delClusterMasterGroupDistributeFromRedis(String clusterName) {
-        String key = RedisKeyConstant.getClusterMasterGroupDistributeKey(clusterName);
-        redisUtil.delKey(key);
+        if (redisUtil.isUseRedis()) {
+            String key = RedisKeyConstant.getClusterMasterGroupDistributeKey(clusterName);
+            redisUtil.delKey(key);
+        }
     }
 
     public List<MigrateDO> getMigrateConfigByClusterAndIp(String cluster, String server) {

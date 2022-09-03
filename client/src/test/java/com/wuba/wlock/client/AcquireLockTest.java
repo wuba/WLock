@@ -37,7 +37,7 @@ public class AcquireLockTest {
 	@Before
 	public void init() {
 		try {
-			wLockClient = new WLockClient("B7BB4E1E8BD1C78C5C611C76F27ACDD7", "127.0.0.1", 22020);
+			wLockClient = new WLockClient("D484FEEF4F6E564920FABD0DE3C58D77", "127.0.0.1", 22020);
 			Random random = new Random();
 			lock = random.nextInt(10000) + "test_key_";
 			wdLock = wLockClient.newDistributeLock(lock);

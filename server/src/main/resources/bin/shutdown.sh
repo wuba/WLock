@@ -23,14 +23,14 @@
 
 
 SERVICE_NAME=wlock
-DIR=`pwd`
+DIR="$(cd "$(dirname "$0")" || exit;pwd)/../.."
 PID_FILE="$DIR"/server/tmp/pid/$SERVICE_NAME
 
-if [ ! -e $PID_FILE ]; then
+if [ ! -e "$PID_FILE" ]; then
   echo "pid file($PID_FILE) not exits"
   exit 1
 fi
-echo "kill pid: `cat $PID_FILE`"
-kill -15 `cat $PID_FILE`
-rm -rf $PID_FILE
+echo "kill pid: $(cat "$PID_FILE")"
+kill -15 "cat $PID_FILE"
+rm -rf "$PID_FILE"
 

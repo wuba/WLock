@@ -45,6 +45,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 @Service
 @Slf4j
@@ -161,6 +165,12 @@ public class NodeService {
 		}
 	}
 
+	public boolean checkServerExist(String env, String ip,int port) throws Exception {
+		String server = ip + COLON_SEPARATOR + port;
+		ServerDO serverDO = serverRepository.getByServer(env, server);
+		return serverDO != null;
+	}
+
 	public void addServer(String env, ServerInfoReq serverInfoReq) throws ServiceException {
 		String server = serverInfoReq.getIp() + COLON_SEPARATOR + serverInfoReq.getTcpPort();
 		ServerDO serverDO = null;
@@ -198,6 +208,23 @@ public class NodeService {
 			throw new ServiceException(ExceptionConstant.SERVER_EXCEPTION);
 		}
 	}
+
+
+	public CompletableFuture<List<ServerDO>> getServerList(String env, String clusterName, ServerState serverState) throws ServiceException {
+		CompletableFuture<List<ServerDO>> completableFuture = new CompletableFuture<>();
+		CompletableFuture.runAsync(() -> {
+			try {
+				completableFuture.complete(serverRepository.getServerByClusterIdAndState(env, clusterName, serverState.getValue()));
+			} catch (Exception e) {
+				log.info("getServerList error", e);
+				completableFuture.completeExceptionally(e);
+			}
+		});
+		return completableFuture;
+	}
+
+
+
 
 	public JSONObject getServerOnlineOfflineList(String env, String clusterName, ServerState serverState) throws ServiceException {
 		List<ServerDO> serverList = null;
@@ -261,10 +288,12 @@ public class NodeService {
 	}
 
 	private void notifyRegistryClusterChange(String clusterName, String env) {
-		PushMessage pushMessage = new PushMessage();
-		pushMessage.setCluster(clusterName);
-		pushMessage.setVersion(System.currentTimeMillis());
-		redisUtil.publish(RedisKeyConstant.REDIS_SUBSCRIBE_CHANNEL, JSON.toJSONString(pushMessage));
+		if (redisUtil.isUseRedis()) {
+			PushMessage pushMessage = new PushMessage();
+			pushMessage.setCluster(clusterName);
+			pushMessage.setVersion(System.currentTimeMillis());
+			redisUtil.publish(RedisKeyConstant.REDIS_SUBSCRIBE_CHANNEL, JSON.toJSONString(pushMessage));
+		}
 	}
 
 	public void offlineServers(String env, String clusterName, String idString) throws ServiceException {

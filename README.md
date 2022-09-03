@@ -79,7 +79,7 @@ java version "1.8.0_121"
 
 #### 服务初始化步骤 : 
 1. **创建数据表** 
-	- wlock 注册中心,默认使用 H2 数据库,如果想使用 mysql,请参考 [相关 SQL](document/sql/create.sql),快速启动可以跳过该步骤.
+	- wlock 注册中心,为方便快速启动,使用 H2 数据库,线上建议使用 mysql,建表请参考 [ SQL](document/sql/create.sql).
 2. **部署注册中心并启动** - [详情](document/DEPLOY.md)
 3. **创建集群** - [详情](document/DEPLOY.md)
 4. **添加节点** - [详情](document/DEPLOY.md)
@@ -160,9 +160,10 @@ AcquireLockResult writeResult = writeLock.tryAcquireLock(1000 * 60, 1000 * 60);
 **以上只是简单使用demo,详细使用说明请参考[使用文档](document/USE.md)**
 
 ## 文档
-[开源对比](document/BENCHMARK.md)  
-[部署文档](document/DEPLOY.md)  
-[接口文档](document/USE.md)  
+
+[开源对比](document/BENCHMARK.md) 
+[部署文档](document/DEPLOY.md) 
+[接口文档](document/USE.md) 
 [分布式锁源码实现对比](document/CONTRAST.md)
 
 ## 参考
