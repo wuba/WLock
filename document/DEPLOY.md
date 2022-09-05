@@ -12,6 +12,8 @@
 
 快速启动接口 : `/wlock/quick/init`
 
+备注 : 该接口会自动帮助创建 `default_cluster`集群,并且按照参数添加节点,对节点进行创建,给该集群添加秘钥`default_key`.秘钥key和集群会在响应中返回.
+
 #### 脚本方式 : 
 
 ```shell
@@ -45,14 +47,20 @@ sh bin/start.sh
 ```
 4. **通过 swagger 进行集群创建**
 
-5. **通过 swagger 进行节点添加** 
+接口 : `/wlock/cluster/add`
+
+4. **通过 swagger 进行节点添加** 
 
 > wlock 服务端支持集群模式部署和单机部署,如果服务端为单机部署,在添加节点时候只要添加一个节点即可.
 >
 > 如果是集群模式部署,请注意多个集群使用的paxos 端口  , tcp 端口  , telnet 端口,udp 端口需要保持一致,每个节点的序列 ID 需要不一样.
 
+接口 : `/wlock/server/add`
+
 6. **通过 swagger 进行节点上线**
 > 对于添加好的节点进行上线操作,只有上线后的节点才会真正对外提供服务
+
+接口 : `/wlock/server/online`
 
 
 7. **服务端初始化**
