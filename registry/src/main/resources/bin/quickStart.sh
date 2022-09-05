@@ -16,15 +16,14 @@
 # ----------------------------------------------------------------------------
 
 USAGE="Usage: quickinit <other_config>
-	   other_config: <sequence_id> <ip> <tcp_port> <telnet_port> <paxos_port> <udp_port> <token>
+	   other_config: <sequence_id> <ip> <tcp_port> <paxos_port> <udp_port> <token>
 Example:
-	  quickinit <sequence_id> <ip> <tcp_port> <telnet_port> <paxos_port> <udp_port> <token>
-	  quickinit <sequence_id> <ip> <tcp_port> <telnet_port> <paxos_port> <udp_port>"
+	  quickinit <sequence_id> <ip> <tcp_port> <paxos_port> <udp_port> <token>
+	  quickinit <sequence_id> <ip> <tcp_port> <paxos_port> <udp_port>"
 
 SEQUENCE_ID=""
 IP=""
 TCP_PORT=""
-TELNET_PORT=""
 PAXOS_PORT=""
 UDP_PORT=""
 TOKEN="123"
@@ -42,10 +41,6 @@ checkParam() {
     echo "tcp_port must not null"
     exit 1
   fi
-  if [ "$TELNET_PORT" = "" ]; then
-    echo "telnet_port must not null"
-    exit 1
-  fi
   if [ "$PAXOS_PORT" = "" ]; then
     echo "paxos_port must not null"
     exit 1
@@ -60,21 +55,20 @@ initParam() {
   SEQUENCE_ID=$1
   IP=$2
   TCP_PORT=$3
-  TELNET_PORT=$4
-  PAXOS_PORT=$5
-  UDP_PORT=$6
-  if [ $# = 7 ]; then
-    TOKEN=$7
+  PAXOS_PORT=$4
+  UDP_PORT=$5
+  if [ $# = 6 ]; then
+    TOKEN=$6
   fi
-  echo "use <sequence_id> [$SEQUENCE_ID] <ip> [$IP] <tcp_port> [$TCP_PORT] <telnet_port> [$TELNET_PORT] <paxos_port> [$PAXOS_PORT] <udp_port> [$UDP_PORT] <token> [$TOKEN] "
+  echo "use <sequence_id> [$SEQUENCE_ID] <ip> [$IP] <tcp_port> [$TCP_PORT] <paxos_port> [$PAXOS_PORT] <udp_port> [$UDP_PORT] <token> [$TOKEN] "
 }
 
 main() {
   echo "$*"
   initParam $*
   checkParam $*
-  echo "{\"sequenceId\":$SEQUENCE_ID,\"ip\":\"$IP\",\"tcpPort\":$TCP_PORT,\"telnetPort\":$TELNET_PORT,\"paxosPort\":$PAXOS_PORT,\"udpPort\":$UDP_PORT}"
-  curl -X POST "http://localhost:8888/wlock/quick/init" -H "accept: */*" -H "token: $TOKEN" -H "Content-Type: application/json" -d "{\"sequenceId\":$SEQUENCE_ID,\"ip\":\"$IP\",\"tcpPort\":$TCP_PORT,\"telnetPort\":$TELNET_PORT,\"paxosPort\":$PAXOS_PORT,\"udpPort\":$UDP_PORT}"
+  echo "{\"sequenceId\":$SEQUENCE_ID,\"ip\":\"$IP\",\"tcpPort\":$TCP_PORT,\"paxosPort\":$PAXOS_PORT,\"udpPort\":$UDP_PORT}"
+  curl -X POST "http://localhost:8888/wlock/quick/init" -H "accept: */*" -H "token: $TOKEN" -H "Content-Type: application/json" -d "{\"sequenceId\":$SEQUENCE_ID,\"ip\":\"$IP\",\"tcpPort\":$TCP_PORT,\"paxosPort\":$PAXOS_PORT,\"udpPort\":$UDP_PORT}"
 }
 
 if [ $# -lt 1 ]; then

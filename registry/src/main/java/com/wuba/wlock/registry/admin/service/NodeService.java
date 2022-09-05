@@ -91,7 +91,6 @@ public class NodeService {
 			serverResp = new ServerResp();
 			serverResp.setId(String.valueOf(serverDO.getId()));
 			serverResp.setServer(serverDO.getServerAddr());
-			serverResp.setTelnetPort(serverDO.getTelnetPort());
 			serverResp.setPaxosPort(serverDO.getPaxosPort());
 			serverResp.setUdpPort(serverDO.getUdpPort());
 			serverResp.setClusterName(serverDO.getClusterId());
@@ -196,7 +195,6 @@ public class NodeService {
 		serverDO = new ServerDO();
 		serverDO.setSequenceId(serverInfoReq.getSequenceId());
 		serverDO.setServerAddr(server);
-		serverDO.setTelnetPort(serverInfoReq.getTelnetPort());
 		serverDO.setPaxosPort(serverInfoReq.getPaxosPort());
 		serverDO.setClusterId(serverInfoReq.getClusterName());
 		serverDO.setUdpPort(serverInfoReq.getUdpPort());

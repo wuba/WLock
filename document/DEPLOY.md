@@ -12,9 +12,18 @@
 
 快速启动接口 : `/wlock/quick/init`
 
-#### 脚本方式
+#### 脚本方式 : 
 
-sh quickStart.sh quickinit <sequence_id> <ip> <tcp_port> <telnet_port> <paxos_port> <udp_port>
+```shell
+# sequence_id 序列 id,用于唯一标识一个集群内的节点,同一集群内唯一
+# ip 节点 ip
+# tcp_port : 用于对外暴露的端口
+# paxos_port : 进行 paxos 的端口
+# udpPort : paxos 进行 udp 通信端口
+sh quickStart.sh quickinit <sequence_id> <ip> <tcp_port>  <paxos_port> <udp_port>
+```
+
+
 
 ## 常规部署集群
 

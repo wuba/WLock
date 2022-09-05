@@ -147,7 +147,6 @@ public class ChangeNodeOperateHandler extends BaseMigrateOperateHandlerInterface
 			serverDO = new ServerDO();
 			serverDO.setSequenceId(changeGroupNodeOperateInfo.getSequenceId());
 			serverDO.setServerAddr(server);
-			serverDO.setTelnetPort(changeGroupNodeOperateInfo.getTelnetPort());
 			serverDO.setPaxosPort(changeGroupNodeOperateInfo.getPaxosPort());
 			serverDO.setClusterId(changeGroupNodeOperateInfo.getClusterName());
 			serverDO.setUdpPort(changeGroupNodeOperateInfo.getUdpPort());

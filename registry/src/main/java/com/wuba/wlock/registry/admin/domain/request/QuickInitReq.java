@@ -32,9 +32,6 @@ public class QuickInitReq {
 	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "tcp端口")
 	private int tcpPort;
 
-	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "telnet端口")
-	private int telnetPort;
-
 	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "paxos端口")
 	private int paxosPort;
 
@@ -47,7 +44,6 @@ public class QuickInitReq {
 		serverInfoReq.setSequenceId(sequenceId);
 		serverInfoReq.setIp(ip);
 		serverInfoReq.setTcpPort(tcpPort);
-		serverInfoReq.setTelnetPort(telnetPort);
 		serverInfoReq.setPaxosPort(paxosPort);
 		serverInfoReq.setUdpPort(udpPort);
 		return serverInfoReq;

@@ -17,7 +17,9 @@ package com.wuba.wlock.registry.admin.domain.request;
 
 import com.wuba.wlock.registry.admin.constant.ValidationConstant;
 import com.wuba.wlock.registry.admin.validators.ValidationCheck;
+import lombok.Data;
 
+@Data
 public class ServerInfoReq {
 
 	@ValidationCheck(allowEmpty = false, regexExpression = ValidationConstant.REGEX_NAME, filedDescription = "集群名")
@@ -32,69 +34,10 @@ public class ServerInfoReq {
 	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "tcp端口")
 	private int tcpPort;
 	
-	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "telnet端口")
-	private int telnetPort;
-	
 	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "paxos端口")
 	private int paxosPort;
 	
 	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "udp端口")
 	private int udpPort;
-
-	public String getClusterName() {
-		return clusterName;
-	}
-
-	public void setClusterName(String clusterName) {
-		this.clusterName = clusterName;
-	}
-
-	public int getSequenceId() {
-		return sequenceId;
-	}
-
-	public void setSequenceId(int sequenceId) {
-		this.sequenceId = sequenceId;
-	}
-
-	public String getIp() {
-		return ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-
-	public int getTcpPort() {
-		return tcpPort;
-	}
-
-	public void setTcpPort(int tcpPort) {
-		this.tcpPort = tcpPort;
-	}
-
-	public int getTelnetPort() {
-		return telnetPort;
-	}
-
-	public void setTelnetPort(int telnetPort) {
-		this.telnetPort = telnetPort;
-	}
-
-	public int getPaxosPort() {
-		return paxosPort;
-	}
-
-	public void setPaxosPort(int paxosPort) {
-		this.paxosPort = paxosPort;
-	}
-
-	public int getUdpPort() {
-		return udpPort;
-	}
-
-	public void setUdpPort(int udpPort) {
-		this.udpPort = udpPort;
-	}
 
 }
