@@ -75,6 +75,9 @@ public class ClusterService {
 		return new Page<ClusterResp>(clusterDoPage.getPageInfo(), clusterRespList);
 	}
 
+	public boolean checkClusterExist(String env,String clusterName) throws Exception {
+		return clusterRepository.isExistCluster(env, clusterName);
+	}
 
 	public void addCluster(String env, ClusterInfoReq clusterInfoReq) throws ServiceException {
 		boolean flag = false;

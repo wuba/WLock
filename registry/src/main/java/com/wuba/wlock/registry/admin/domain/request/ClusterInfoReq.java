@@ -21,6 +21,8 @@ import com.wuba.wlock.registry.admin.validators.ValidationCheck;
 
 public class ClusterInfoReq {
 
+	public static final String DEFAULT_CLUSTER = "default_cluster";
+
 	@ValidationCheck(allowEmpty = false, regexExpression = ValidationConstant.REGEX_NAME, maxLength = 30, filedDescription = "集群名")
 	private String clusterName;
 	
@@ -42,5 +44,11 @@ public class ClusterInfoReq {
 	public void setGroupCount(int groupCount) {
 		this.groupCount = groupCount;
 	}
-	
+
+	public static ClusterInfoReq getDefaultClusterInfoReq() {
+		ClusterInfoReq clusterInfoReq = new ClusterInfoReq();
+		clusterInfoReq.setClusterName(DEFAULT_CLUSTER);
+		clusterInfoReq.setGroupCount(15);
+		return clusterInfoReq;
+	}
 }

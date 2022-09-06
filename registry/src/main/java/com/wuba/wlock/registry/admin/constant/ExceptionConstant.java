@@ -59,6 +59,8 @@ public class ExceptionConstant {
 	public static final String UPDATE_FAILED = "修改失败";
 
 	public static final String ADD_SUCCESS = "添加成功";
+
+	public static final String QUICK_INIT_SUCCESS = "快速初始化成功";
 	
 	public static final String ADD_FAILED = "添加失败";
 

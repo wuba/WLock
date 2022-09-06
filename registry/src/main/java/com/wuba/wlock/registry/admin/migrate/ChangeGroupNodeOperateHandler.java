@@ -256,10 +256,12 @@ public class ChangeGroupNodeOperateHandler extends BaseMigrateOperateHandlerInte
 	}
 
 	private void notifyRegistryClusterChange(String clusterName) {
-		PushMessage pushMessage = new PushMessage();
-		pushMessage.setCluster(clusterName);
-		pushMessage.setVersion(System.currentTimeMillis());
-		redisUtil.publish(RedisKeyConstant.REDIS_SUBSCRIBE_CHANNEL, JSON.toJSONString(pushMessage));
+		if (redisUtil.isUseRedis()) {
+			PushMessage pushMessage = new PushMessage();
+			pushMessage.setCluster(clusterName);
+			pushMessage.setVersion(System.currentTimeMillis());
+			redisUtil.publish(RedisKeyConstant.REDIS_SUBSCRIBE_CHANNEL, JSON.toJSONString(pushMessage));
+		}
 	}
 
 	public boolean checkNodeCount(Long version) throws ServiceException {

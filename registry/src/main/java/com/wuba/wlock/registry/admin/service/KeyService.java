@@ -15,6 +15,7 @@
  */
 package com.wuba.wlock.registry.admin.service;
 
+import com.google.common.base.Strings;
 import com.wuba.wlock.registry.admin.constant.ExceptionConstant;
 import com.wuba.wlock.registry.admin.constant.KeyConfig;
 import com.wuba.wlock.registry.admin.domain.request.ApplyKeyReq;
@@ -34,6 +35,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import static com.wuba.wlock.registry.admin.constant.ExceptionConstant.APPLY_KEY_ERROR;
@@ -46,6 +48,21 @@ public class KeyService {
     KeyRepository keyRepository;
 	@Autowired
     ClusterRepository clusterRepository;
+
+	public void getKeyByName(String env, String keyName, CompletableFuture<KeyDO> keyInfo) throws ServiceException {
+		CompletableFuture.runAsync(() -> {
+			if (Strings.isNullOrEmpty(keyName)) {
+				keyInfo.completeExceptionally(new RuntimeException("key name is null."));
+			}
+			try {
+				KeyDO keyByName = keyRepository.getKeyByName(env, keyName);
+				keyInfo.complete(keyByName);
+			} catch (Exception e) {
+				log.error("search key info error.", e);
+				keyInfo.completeExceptionally(e);
+			}
+		});
+	}
 
 	public Page<KeyResp> getKeyList(String env, KeyInfoReq keyInfoReq) throws ServiceException {
 		if (keyInfoReq == null) {

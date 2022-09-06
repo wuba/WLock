@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import static com.wuba.wlock.registry.admin.constant.ExceptionConstant.*;
 
 @Slf4j
@@ -114,7 +115,9 @@ public class MigrateKeyOperateHandler extends BaseMigrateOperateHandlerInterface
 				}
 				keyRepository.updateKeyDO(Environment.env(), keyByName);
 				clusterRepository.updateClusterVersionByClusterName(Environment.env(), System.currentTimeMillis(), clusterInfo.getClusterId());
-				redisUtil.delKey(String.format(HASHKEY_CLINTCONFONFO_MAPPING, keyByName.getHashKey()));
+				if (redisUtil.isUseRedis()) {
+					redisUtil.delKey(String.format(HASHKEY_CLINTCONFONFO_MAPPING, keyByName.getHashKey()));
+				}
 				notifyMigrateGroup(clusterInfo.getClusterId());
 			}
 			if (!needUpdateGroupInfo.isEmpty()) {
@@ -296,10 +299,12 @@ public class MigrateKeyOperateHandler extends BaseMigrateOperateHandlerInterface
 	}
 
 	private void notifyMigrateGroup(String clusterName) {
-		PushMessage pushMessage = new PushMessage();
-		pushMessage.setCluster(clusterName);
-		pushMessage.setVersion(System.currentTimeMillis());
-		redisUtil.publish(RedisKeyConstant.REDIS_SUBSCRIBE_CHANNEL, JSON.toJSONString(pushMessage));
+		if (redisUtil.isUseRedis()) {
+			PushMessage pushMessage = new PushMessage();
+			pushMessage.setCluster(clusterName);
+			pushMessage.setVersion(System.currentTimeMillis());
+			redisUtil.publish(RedisKeyConstant.REDIS_SUBSCRIBE_CHANNEL, JSON.toJSONString(pushMessage));
+		}
 	}
 
 	private int getGroupIdByOldGroupId(int oldGroupId, int groupCount, int migrateProcessType) throws ServiceException {

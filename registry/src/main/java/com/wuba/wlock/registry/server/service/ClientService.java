@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2005-present, 58.com.  All rights reserved.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -66,7 +66,7 @@ public class ClientService {
     @Autowired
     MigrateRepository migrateRepository;
 
-    public ClientKeyEntity getClientKeyEntity(String hashKey) throws Exception{
+    public ClientKeyEntity getClientKeyEntity(String hashKey) throws Exception {
         Validator.keyValidate(hashKey);
 
         ClientConfInfo clientConfInfo = this.getClientConfInfoByMapping(hashKey, false);
@@ -77,13 +77,12 @@ public class ClientService {
 
 
     public ClientConfInfo getClientConfInfoByMapping(String hashKey, boolean useRedis) throws Exception {
-        if (useRedis) {
+        if (useRedis && redisUtil.isUseRedis()) {
             ClientConfInfo clientConfInfo = getClientConfInfoFromRedis(hashKey);
             if (clientConfInfo != null) {
                 return clientConfInfo;
             }
         }
-
         KeyDO keyDO = keyRepository.getKeyByHashKey(Environment.env(), hashKey);
         if (null == keyDO) {
             throw new Exception("keyDO is null! key: " + hashKey);
@@ -102,8 +101,10 @@ public class ClientService {
 
     public void setClientConfInfoToRedis(String hashKey, ClientConfInfo clientConfInfo) {
         try {
-            String key = RedisKeyConstant.getClientConfInfoMappingKey(hashKey);
-            redisUtil.setValueAndExpire(key, JSON.toJSONString(clientConfInfo), REDIS_EXPIRE_THREE);
+            if (redisUtil.isUseRedis()) {
+                String key = RedisKeyConstant.getClientConfInfoMappingKey(hashKey);
+                redisUtil.setValueAndExpire(key, JSON.toJSONString(clientConfInfo), REDIS_EXPIRE_THREE);
+            }
         } catch (Exception e) {
             log.error("ClientService.setClientConfInfoToRedis error", e);
         }
@@ -251,7 +252,7 @@ public class ClientService {
     }
 
     public ClusterMasterGroupDistribute getClusterMasterGroupDistribute(String clusterName, boolean useRedis) throws Exception {
-        if (useRedis) {
+        if (useRedis && redisUtil.isUseRedis()) {
             ClusterMasterGroupDistribute clusterMasterGroupDistribute = getClusterMasterGroupDistributeFromRedis(clusterName);
             if (clusterMasterGroupDistribute != null) {
                 return clusterMasterGroupDistribute;
@@ -278,7 +279,7 @@ public class ClientService {
 
         HashMap<Integer/*groupId*/, String/*IP + port*/> groupServerMap = new HashMap<Integer, String>();
         HashMap<Integer/*groupId*/, Long/*group version*/> groupVersionMap = new HashMap<Integer, Long>();
-        for (GroupServerRefDO groupServerRefDO: groupServerRefList) {
+        for (GroupServerRefDO groupServerRefDO : groupServerRefList) {
             groupServerMap.put(groupServerRefDO.getGroupId(), groupServerRefDO.getServerAddr());
             groupVersionMap.put(groupServerRefDO.getGroupId(), groupServerRefDO.getVersion());
         }
@@ -298,10 +299,12 @@ public class ClientService {
 
     private ClusterMasterGroupDistribute getClusterMasterGroupDistributeFromRedis(String clusterName) {
         try {
-            String redisKey = RedisKeyConstant.getClusterMasterGroupDistributeKey(clusterName);
-            String result = redisUtil.getValue(redisKey);
-            if (StringUtils.isNotEmpty(result)) {
-                return JSON.parseObject(result, ClusterMasterGroupDistribute.class);
+            if (redisUtil.isUseRedis()) {
+                String redisKey = RedisKeyConstant.getClusterMasterGroupDistributeKey(clusterName);
+                String result = redisUtil.getValue(redisKey);
+                if (StringUtils.isNotEmpty(result)) {
+                    return JSON.parseObject(result, ClusterMasterGroupDistribute.class);
+                }
             }
         } catch (Exception e) {
             log.error("ClientService.getClusterMasterGroupDistributeFromRedis error", e);
@@ -312,8 +315,10 @@ public class ClientService {
 
     private void setClusterMasterGroupDistributeToRedis(String clusterName, ClusterMasterGroupDistribute entity) {
         try {
-            String key = RedisKeyConstant.getClusterMasterGroupDistributeKey(clusterName);
-            redisUtil.setValueAndExpire(key, JSON.toJSONString(entity), REDIS_EXPIRE_THREE);
+            if (redisUtil.isUseRedis()) {
+                String key = RedisKeyConstant.getClusterMasterGroupDistributeKey(clusterName);
+                redisUtil.setValueAndExpire(key, JSON.toJSONString(entity), REDIS_EXPIRE_THREE);
+            }
         } catch (Exception e) {
             log.error("ClientService.setClusterMasterGroupDistributeToRedis error", e);
         }

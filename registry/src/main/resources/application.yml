@@ -40,7 +40,7 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-
+use_redis: false
 redis_ip: demo
 redis_port: 2001
 redis_auth:

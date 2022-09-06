@@ -17,21 +17,10 @@ package com.wuba.wlock.registry.admin.domain.response;
 
 import lombok.Data;
 
+
 @Data
-public class ServerResp {
-
-	private String id;
-	
-	private String server;
-	
-
-	private int paxosPort;
-	
-	private int udpPort;
-	
+public class QuickInitResp {
 	private String clusterName;
-	
-	private String state;
-	
-	private int sequenceId;
+	private String keyName;
+	private String keyHash;
 }

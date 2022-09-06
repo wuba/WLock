@@ -1,3 +1,4 @@
+#!/bin/sh
 # ----------------------------------------------------------------------------
 # Copyright (C) 2005-present, 58.com.  All rights reserved.
 #
@@ -14,6 +15,5 @@
 # limitations under the License.
 # ----------------------------------------------------------------------------
 
-#!/bin/sh
 PID=`pgrep -f registry`
 kill -9 ${PID}
