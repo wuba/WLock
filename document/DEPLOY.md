@@ -7,7 +7,13 @@
 > url 中的 localhost 表示的是注册中心地址
 
 ## 快速启动
+### 准备阶段
+**部署注册中心并启动**
 
+```shell
+sh bin/start.sh
+```
+### 通过脚本快速初始化数据
 #### swagger 方式 : 
 
 快速启动接口 : `/wlock/quick/init`
@@ -24,7 +30,16 @@
 # udpPort : paxos 进行 udp 通信端口
 sh quickStart.sh quickinit <sequence_id> <ip> <tcp_port>  <paxos_port> <udp_port>
 ```
+### 启动服务端
+> 按照添加节点进行项目启动 ,启动节点数量和添加节点数量相同
 
+```shell
+# 1. 执行初始化之前请确认 config 下的registry.properties 中的 registryServerIp配置是不是注册中心 ip
+# 2. 确认 server.properties 配置的 listenPort 是不是注册中心新增节点的 tcp 端口,二者需要保持一致
+cd target
+unzip -d ./server server.zip
+sh server/bin/start.sh
+```
 
 
 ## 常规部署集群

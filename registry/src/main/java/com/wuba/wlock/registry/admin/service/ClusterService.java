@@ -135,12 +135,8 @@ public class ClusterService {
 	}
 
 	private boolean isClusterHasServers(String env, String clusterName) throws Exception {
-		List<ServerDO> serverlist = null;
-		serverlist = serverRepository.getServersByClusterName(env, clusterName);
-		if (serverlist == null || serverlist.size() < 1) {
-			return false;
-		}
-		return true;
+		List<ServerDO> serverList = serverRepository.getServersByClusterName(env, clusterName);
+		return serverList != null && serverList.size() >= 1;
 	}
 
 
