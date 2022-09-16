@@ -28,10 +28,6 @@ public class ApplyKeyReq {
 	private String des;
 	@ValidationCheck(allowEmpty = false, allowChineseLanguage = false, filedDescription = "密钥名称")
 	private String key;
-	@ValidationCheck(allowEmpty = false, filedDescription = "所属组织")
-	private String orgId;
-	@ValidationCheck(allowEmpty = false, filedDescription = "负责人")
-	private String owners;
 	@ValidationCheck(allowEmpty = false, filedDescription = "qps")
 	private int qps;
 	@ValidationCheck(allowEmpty = false, filedDescription = "自动续约")
@@ -43,8 +39,6 @@ public class ApplyKeyReq {
 		ApplyKeyReq applyKeyReq = new ApplyKeyReq();
 		applyKeyReq.setDes("default");
 		applyKeyReq.setKey(DEFAULT_KEY_NAME);
-		applyKeyReq.setOrgId("default_org");
-		applyKeyReq.setOwners("default_owner");
 		applyKeyReq.setQps(100);
 		applyKeyReq.setAutoRenew(0);
 		applyKeyReq.setClusterName(ClusterInfoReq.DEFAULT_CLUSTER);

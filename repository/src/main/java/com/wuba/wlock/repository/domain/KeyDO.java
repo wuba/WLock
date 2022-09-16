@@ -35,11 +35,9 @@ public class KeyDO extends BaseDO<KeyDO> {
 	public static final String FIELD_NAME = "name";
 	public static final String FIELD_HASH_KEY = "hash_key";
 	public static final String FIELD_CLUSTER_ID = "cluster_id";
-	public static final String FIELD_ORG_ID= "org_id";
 	public static final String FIELD_QPS= "qps";
 	public static final String FIELD_DESCRIPTION= "description";
 	public static final String FIELD_CREATOR= "creator";
-	public static final String FIELD_OWNER= "owners";
 	public static final String FIELD_CREATE_TIME = "create_time";
 	public static final String FIELD_GROUP_ID = "group_id";
 	public static final String FIELD_GROUP_IDS = "group_ids";
@@ -61,9 +59,6 @@ public class KeyDO extends BaseDO<KeyDO> {
 	@TableField("cluster_id")
 	private String clusterId;
 
-	@TableField("org_id")
-	private String orgId;
-
 	@TableField("qps")
 	private Integer qps;
 
@@ -72,9 +67,6 @@ public class KeyDO extends BaseDO<KeyDO> {
 
 	@TableField("creator")
 	private String creator;
-
-	@TableField("owners")
-	private String owners;
 
 	@TableField("create_time")
 	private Date createTime;
