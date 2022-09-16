@@ -19,7 +19,6 @@ server:
 
 registry:
   env: offline
-  token: 123
 spring:
   application:
     name: WLock

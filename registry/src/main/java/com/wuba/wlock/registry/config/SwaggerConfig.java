@@ -43,16 +43,7 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
-                .build()
-                .globalRequestParameters(
-                        Collections.singletonList(new springfox.documentation.builders.RequestParameterBuilder()
-                                // 不能叫Authorization
-                                .name("token")
-                                .description("token")
-                                .in(ParameterType.HEADER)
-                                .required(true)
-                                .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
-                                .build()));
+                .build();
     }
 
     private ApiInfo apiInfo() {

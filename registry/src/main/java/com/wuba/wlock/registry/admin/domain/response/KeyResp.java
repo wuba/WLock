@@ -21,17 +21,12 @@ import com.wuba.wlock.registry.admin.validators.ValidationCheck;
 public class KeyResp {
 
 	@ValidationCheck(allowEmpty = true, filedDescription = "秘钥Id")
-	private long id;
+	private String id;
 	private String keyName;
 	private String hashCode;
-	private String orgName;
 	private int qps;
 	private int autoRenew;
 	private String autoRenewStr;
-	@ValidationCheck(allowEmpty = true, filedDescription = "部门ID")
-	private String orgId;
-	@ValidationCheck(allowEmpty = true, filedDescription = "负责人")
-	private String owners;
 	@ValidationCheck(allowEmpty = true, filedDescription = "描述")
 	private String description;
 
@@ -43,11 +38,11 @@ public class KeyResp {
 		this.qps = qps;
 	}
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -65,30 +60,6 @@ public class KeyResp {
 
 	public void setHashCode(String hashCode) {
 		this.hashCode = hashCode;
-	}
-
-	public String getOrgName() {
-		return orgName;
-	}
-
-	public String getOrgId() {
-		return orgId;
-	}
-
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
-	}
-
-	public void setOrgName(String orgName) {
-		this.orgName = orgName;
-	}
-
-	public String getOwners() {
-		return owners;
-	}
-
-	public void setOwners(String owners) {
-		this.owners = owners;
 	}
 
 	public String getDescription() {
