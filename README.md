@@ -119,13 +119,13 @@ http://localhost:8888/swagger-ui/index.html#/key-rest/getKeyListUsingPOST
 **4. 初始化**
 
 ```java
-wLockClient = new WLockClient("test123_8", "127.0.0.1", 22020);
+wLockClient = new WLockClient("D484FEEF4F6E564920FABD0DE3C58D77", "127.0.0.1", 22020);
 String lockKey = "my_test_lock";
 WDistributedLock wdLock = wlockClient.newDistributeLock(lockKey);
 ```
 
 **参数说明 :**  
-**keyHash** ：秘钥名称,从秘钥配置中获取  
+**keyHash** ：秘钥hash key,从秘钥配置中获取  
 **registryIp** ：注册中心 ip  
 **registryPort** ：注册中心端口
 **lockKey** ：分布式锁名称  
@@ -162,11 +162,10 @@ AcquireLockResult writeResult = writeLock.tryAcquireLock(1000 * 60, 1000 * 60);
 
 ## 文档
 
-[开源对比](document/BENCHMARK.md) 
-[部署文档](document/DEPLOY.md) 
-[接口文档](document/USE.md) 
-[分布式锁源码实现对比](document/CONTRAST.md)
-
+[开源对比](document/BENCHMARK.md)   
+[部署文档](document/DEPLOY.md)   
+[接口文档](document/USE.md)   
+[分布式锁源码实现对比](document/CONTRAST.md)  
 ## 参考
 [How to do distributed locking](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)
 
