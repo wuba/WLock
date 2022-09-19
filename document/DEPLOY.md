@@ -11,7 +11,10 @@
 **部署注册中心并启动**
 
 ```shell
+# 在 target 目录中找到 registry 目录,cd 到该目录下执行下面命令 : 
 sh bin/start.sh
+# 确认是否启动成功  : 
+cat log/registry* | grep "Application start finish"
 ```
 ### 通过脚本快速初始化数据
 #### swagger 方式 : 
