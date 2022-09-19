@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class HeartbeatService {
 	private static final Log logger = LogFactory.getLog(HeartbeatService.class);
 
-	public AtomicBoolean started = new AtomicBoolean(true);
+	public AtomicBoolean started = new AtomicBoolean(false);
 	private int initialDelay = 30;
 	private int period = (new Random().nextInt(4) + 2);
 	private ConcurrentHashMap<String, Integer> serverDetectMap = new ConcurrentHashMap<String, Integer>(128);
@@ -48,16 +48,21 @@ public class HeartbeatService {
 	public static HeartbeatService hbService = new HeartbeatService();
 
 	private HeartbeatService() {
-		Thread thread = new Thread(new HeartbeatWorker());
-		thread.setName("WLock HeartbeatDetectThread");
-		thread.setDaemon(true);
-		thread.start();
-
-		logger.info(Version.INFO + ", start heartbeat detect job success.");
 	}
 
 	public static HeartbeatService getHbService() {
 		return hbService;
+	}
+
+	public void start() {
+		if (started.compareAndSet(false, true)) {
+			Thread thread = new Thread(new HeartbeatWorker());
+			thread.setName("WLock HeartbeatDetectThread");
+			thread.setDaemon(true);
+			thread.start();
+
+			logger.info(Version.INFO + ", start heartbeat detect job success.");
+		}
 	}
 
 	private void sendHeartbeat() {

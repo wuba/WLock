@@ -26,12 +26,6 @@ public class KeyInfoReq {
 	@ValidationCheck(allowEmpty = true, regexExpression = ValidationConstant.REGEX_NAME, filedDescription = "秘钥名")
 	private String keyName;
 	
-	@ValidationCheck(allowEmpty = true, filedDescription = "负责人")
-	private String owner;
-	
-	@ValidationCheck(allowEmpty = true, filedDescription = "部门Id")
-	private String orgId;
-	
 	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "页码")
 	private int pageNumber;
 	

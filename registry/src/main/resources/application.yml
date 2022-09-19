@@ -20,7 +20,6 @@ logging:
   config: ${user.dir}/../config/logback-spring.xml
 registry:
   env: offline
-  token: 123
 spring:
   application:
     name: WLock
