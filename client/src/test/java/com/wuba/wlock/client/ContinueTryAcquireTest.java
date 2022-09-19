@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package java.com.wuba.wlock.client;
+package com.wuba.wlock.client;
 
 import com.wuba.wlock.client.LockOption;
 import com.wuba.wlock.client.WDistributedLock;

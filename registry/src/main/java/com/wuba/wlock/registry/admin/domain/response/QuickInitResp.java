@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2005-present, 58.com.  All rights reserved.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,23 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.wuba.wlock.registry.admin.domain.request;
+package com.wuba.wlock.registry.admin.domain.response;
 
-
-import com.wuba.wlock.registry.admin.constant.ValidationConstant;
-import com.wuba.wlock.registry.admin.validators.ValidationCheck;
 import lombok.Data;
 
-@Data
-public class KeyInfoReq {
 
-	@ValidationCheck(allowEmpty = true, regexExpression = ValidationConstant.REGEX_NAME, filedDescription = "秘钥名")
+@Data
+public class QuickInitResp {
+	private String clusterName;
 	private String keyName;
-	
-	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "页码")
-	private int pageNumber;
-	
-	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "每页条数")
-	private int pageSize;
-	
+	private String keyHash;
 }

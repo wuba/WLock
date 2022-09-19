@@ -302,9 +302,8 @@ public class MigrateService {
 				// 新节点
 				ServerDO serverDO = serverRepository.getByServer(Environment.env(), node.getKey());
 				ServerResp serverResp = new ServerResp();
-				serverResp.setId(serverDO.getId());
+				serverResp.setId(String.valueOf(serverDO.getId()));
 				serverResp.setServer(serverDO.getServerAddr());
-				serverResp.setTelnetPort(serverDO.getTelnetPort());
 				serverResp.setPaxosPort(serverDO.getPaxosPort());
 				serverResp.setClusterName(serverDO.getClusterId());
 				serverResp.setState(String.valueOf(serverDO.getState()));

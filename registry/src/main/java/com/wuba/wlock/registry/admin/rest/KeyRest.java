@@ -21,6 +21,7 @@ import com.wuba.wlock.registry.admin.domain.ActionResult;
 import com.wuba.wlock.registry.admin.domain.CommonResponse;
 import com.wuba.wlock.registry.admin.domain.request.ApplyKeyReq;
 import com.wuba.wlock.registry.admin.domain.request.KeyInfoReq;
+import com.wuba.wlock.registry.admin.domain.request.KeyUpdateReq;
 import com.wuba.wlock.registry.admin.domain.response.KeyResp;
 import com.wuba.wlock.registry.admin.service.KeyService;
 import com.wuba.wlock.registry.admin.utils.CommonResultUtil;
@@ -73,9 +74,9 @@ public class KeyRest {
 
 	@ApiOperation("")
 	@PostMapping("/update")
-	public ActionResult updateKey(KeyResp keyResp) {
+	public ActionResult updateKey(KeyUpdateReq keyUpdateReq) {
 		try {
-			keyService.updateKey(Environment.env(), keyResp);
+			keyService.updateKey(Environment.env(), keyUpdateReq);
 		} catch (Exception e) {
 			return CommonResultUtil.buildResult(e);
 		}

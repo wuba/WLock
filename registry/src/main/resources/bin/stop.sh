@@ -1,3 +1,4 @@
+#!/bin/sh
 # ----------------------------------------------------------------------------
 # Copyright (C) 2005-present, 58.com.  All rights reserved.
 #
@@ -13,11 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ----------------------------------------------------------------------------
-#必填
-registryServerIp=registry.server.org
-registryServerPort=22020
-#非必填
-sendBufferSize=
-maxPakageSize=
-connectTimeOut=
-frameMaxLength=
+
+PID=`pgrep -f registry`
+kill -9 ${PID}

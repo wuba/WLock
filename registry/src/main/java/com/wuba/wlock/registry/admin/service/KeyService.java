@@ -15,10 +15,12 @@
  */
 package com.wuba.wlock.registry.admin.service;
 
+import com.google.common.base.Strings;
 import com.wuba.wlock.registry.admin.constant.ExceptionConstant;
 import com.wuba.wlock.registry.admin.constant.KeyConfig;
 import com.wuba.wlock.registry.admin.domain.request.ApplyKeyReq;
 import com.wuba.wlock.registry.admin.domain.request.KeyInfoReq;
+import com.wuba.wlock.registry.admin.domain.request.KeyUpdateReq;
 import com.wuba.wlock.registry.admin.domain.response.KeyResp;
 import com.wuba.wlock.registry.admin.exceptions.ServiceException;
 import com.wuba.wlock.registry.util.MD5;
@@ -34,6 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import static com.wuba.wlock.registry.admin.constant.ExceptionConstant.APPLY_KEY_ERROR;
@@ -46,6 +49,21 @@ public class KeyService {
     KeyRepository keyRepository;
 	@Autowired
     ClusterRepository clusterRepository;
+
+	public void getKeyByName(String env, String keyName, CompletableFuture<KeyDO> keyInfo) throws ServiceException {
+		CompletableFuture.runAsync(() -> {
+			if (Strings.isNullOrEmpty(keyName)) {
+				keyInfo.completeExceptionally(new RuntimeException("key name is null."));
+			}
+			try {
+				KeyDO keyByName = keyRepository.getKeyByName(env, keyName);
+				keyInfo.complete(keyByName);
+			} catch (Exception e) {
+				log.error("search key info error.", e);
+				keyInfo.completeExceptionally(e);
+			}
+		});
+	}
 
 	public Page<KeyResp> getKeyList(String env, KeyInfoReq keyInfoReq) throws ServiceException {
 		if (keyInfoReq == null) {
@@ -72,10 +90,9 @@ public class KeyService {
 		KeyResp keyResp = null;
 		for (KeyDO keyDO : keyDOList) {
 			keyResp = new KeyResp();
-			keyResp.setId(keyDO.getId());
+			keyResp.setId(String.valueOf(keyDO.getId()));
 			keyResp.setKeyName(keyDO.getName());
 			keyResp.setHashCode(keyDO.getHashKey());
-			keyResp.setOrgId(keyDO.getOrgId());
 			keyResp.setQps(keyDO.getQps());
 			keyResp.setAutoRenew(keyDO.getAutoRenew());
 			if (keyDO.getAutoRenew() == 0) {
@@ -83,7 +100,6 @@ public class KeyService {
 			} else {
 				keyResp.setAutoRenewStr(KeyConfig.AUTO_RENEW);
 			}
-			keyResp.setOwners(keyDO.getOwners());
 			keyResp.setDescription(keyDO.getDescription());
 			adminKeyResp.add(keyResp);
 		}
@@ -141,9 +157,9 @@ public class KeyService {
 	}
 
 
-	public boolean updateKey(String env, KeyResp keyResp) throws ServiceException {
+	public boolean updateKey(String env, KeyUpdateReq keyUpdateReq) throws ServiceException {
 		boolean isOwner = false;
-		long keyId = keyResp.getId();
+		long keyId = Long.parseLong(keyUpdateReq.getId());
 		KeyDO keyDO = null;
 		try {
 			keyDO = keyRepository.getKeyById(env, keyId);
@@ -156,10 +172,17 @@ public class KeyService {
 		}
 
 		try {
-			keyDO.setOwners(keyResp.getOwners());
-			keyDO.setDescription(keyResp.getDescription());
-			keyDO.setOrgId(keyResp.getOrgId());
-			keyDO.setAutoRenew(keyResp.getAutoRenew());
+			if (keyUpdateReq.getDescription() != null) {
+				keyDO.setDescription(keyUpdateReq.getDescription());
+			}
+
+			if (keyUpdateReq.getAutoRenew() != null) {
+				keyDO.setAutoRenew(keyUpdateReq.getAutoRenew());
+			}
+
+			if (keyUpdateReq.getQps() != null) {
+				keyDO.setQps(keyUpdateReq.getQps());
+			}
 			return keyRepository.updateKeyDO(env, keyDO);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
@@ -206,11 +229,9 @@ public class KeyService {
 		keyDO.setGroupId(GroupUtil.getGroupByKey(keyName, clusterDO.getGroupCount()));
 		keyDO.setGroupIds(makeGroupIds(clusterDO.getGroupCount()));
 		keyDO.setClusterId(clusterName);
-		keyDO.setOrgId(applyKeyReq.getOrgId());
 		keyDO.setDescription(applyKeyReq.getDes());
 		keyDO.setQps(applyKeyReq.getQps());
 		keyDO.setAutoRenew(applyKeyReq.getAutoRenew());
-		keyDO.setOwners(applyKeyReq.getOwners());
 		keyDO.setCreateTime(new Date());
 		keyDO.setMultiGroup(MultiGroup.Use.getValue());
 		try {

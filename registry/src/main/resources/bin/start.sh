@@ -1,3 +1,4 @@
+#!/bin/sh
 # ----------------------------------------------------------------------------
 # Copyright (C) 2005-present, 58.com.  All rights reserved.
 #
@@ -14,5 +15,25 @@
 # limitations under the License.
 # ----------------------------------------------------------------------------
 
-#!/bin/sh
-nohup java -jar registry-1.0.0.jar &
+CLASS_PATH=""
+DIR=""
+
+initConfigPath() {
+  DIR="$(
+    cd "$(dirname "$0")" || exit
+    pwd
+  )"
+  cd "$DIR" || exit
+  CLASS_PATH=.:"$JAVA_HOME"/lib/tools.jar
+  for jar in "$DIR"/../lib/*.jar; do
+    CLASS_PATH=$CLASS_PATH:$jar
+  done
+}
+
+main() {
+  initConfigPath
+  MAIN_CLASS=com.wuba.wlock.registry.Application
+  java -Xmx8g -Xms8g -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:NewRatio=2 -XX:SurvivorRatio=8 -XX:MaxGCPauseMillis=200 -classpath $CLASS_PATH -Dspring.config.location="$DIR"/../config/ $MAIN_CLASS >>/dev/null 2>&1 &
+}
+
+main

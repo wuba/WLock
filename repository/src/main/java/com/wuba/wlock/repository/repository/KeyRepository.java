@@ -65,19 +65,6 @@ public class KeyRepository extends BaseRepository<KeyMapper, KeyDO> {
 		return save(keyDO);
 	}
 
-	public long getCountByOwner(String choseEnv, String owner) throws Exception {
-		return count(Wrappers.<KeyDO>query().eq(Objects.nonNull(owner), KeyDO.FIELD_OWNER, owner));
-	}
-
-	public List<KeyDO> getByOwner(String choseEnv, String owner) throws Exception {
-		return list(Wrappers.<KeyDO>query().eq(Objects.nonNull(owner), KeyDO.FIELD_OWNER, owner));
-	}
-
-	public List<String> getHashByOwner(String choseEnv, String owner) throws Exception {
-		List<KeyDO> list = list(Wrappers.<KeyDO>query().select(KeyDO.FIELD_OWNER).eq(Objects.nonNull(owner), KeyDO.FIELD_OWNER, owner));
-		return list.stream().map(KeyDO::getHashKey).collect(Collectors.toList());
-	}
-
 	public long getAllCount(String choseEnv) throws Exception {
 		return count();
 	}
@@ -89,8 +76,6 @@ public class KeyRepository extends BaseRepository<KeyMapper, KeyDO> {
 	public boolean updateKeyDO(String choseEnv, KeyDO keyDO) throws Exception {
 		UpdateWrapper<KeyDO> wrapper = new UpdateWrapper<>();
 		wrapper.set(KeyDO.FIELD_CLUSTER_ID, keyDO.getClusterId());
-		wrapper.set(KeyDO.FIELD_ORG_ID, keyDO.getOrgId());
-		wrapper.set(KeyDO.FIELD_OWNER, keyDO.getOwners());
 		wrapper.set(KeyDO.FIELD_DESCRIPTION, keyDO.getDescription());
 		wrapper.set(KeyDO.FIELD_GROUP_ID, keyDO.getGroupId());
 		wrapper.set(KeyDO.FIELD_QPS, keyDO.getQps());

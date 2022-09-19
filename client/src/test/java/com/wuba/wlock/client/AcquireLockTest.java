@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package java.com.wuba.wlock.client;
+package com.wuba.wlock.client;
 
 import com.wuba.wlock.client.WDistributedLock;
 import com.wuba.wlock.client.WLockClient;
@@ -37,7 +37,7 @@ public class AcquireLockTest {
 	@Before
 	public void init() {
 		try {
-			wLockClient = new WLockClient("test123_8", "127.0.0.1", 22020);
+			wLockClient = new WLockClient("D484FEEF4F6E564920FABD0DE3C58D77", "127.0.0.1", 22020);
 			Random random = new Random();
 			lock = random.nextInt(10000) + "test_key_";
 			wdLock = wLockClient.newDistributeLock(lock);

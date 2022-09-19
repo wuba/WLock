@@ -17,78 +17,31 @@ package com.wuba.wlock.registry.admin.domain.request;
 
 
 import com.wuba.wlock.registry.admin.validators.ValidationCheck;
+import lombok.Data;
 
-
+@Data
 public class ApplyKeyReq {
 
-	@ValidationCheck(allowEmpty = false,filedDescription = "描述")
+	public static final String DEFAULT_KEY_NAME = "default_key";
+
+	@ValidationCheck(allowEmpty = false, filedDescription = "描述")
 	private String des;
 	@ValidationCheck(allowEmpty = false, allowChineseLanguage = false, filedDescription = "密钥名称")
 	private String key;
-	@ValidationCheck(allowEmpty = false,filedDescription = "所属组织")
-	private String orgId;
-	@ValidationCheck(allowEmpty = false,filedDescription = "负责人")
-	private String owners;
-	@ValidationCheck(allowEmpty = false,filedDescription = "qps")
+	@ValidationCheck(allowEmpty = false, filedDescription = "qps")
 	private int qps;
-	@ValidationCheck(allowEmpty = false,filedDescription = "自动续约")
+	@ValidationCheck(allowEmpty = false, filedDescription = "自动续约")
 	private int autoRenew;
-	@ValidationCheck(allowEmpty = false,filedDescription = "集群名称")
+	@ValidationCheck(allowEmpty = false, filedDescription = "集群名称")
 	private String clusterName;
-	
-	public String getDes() {
-		return des;
-	}
 
-	public void setDes(String des) {
-		this.des = des;
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public String getOrgId() {
-		return orgId;
-	}
-
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
-	}
-
-	public String getOwners() {
-		return owners;
-	}
-
-	public void setOwners(String owners) {
-		this.owners = owners;
-	}
-
-	public int getQps() {
-		return qps;
-	}
-
-	public void setQps(int qps) {
-		this.qps = qps;
-	}
-
-	public int getAutoRenew() {
-		return autoRenew;
-	}
-
-	public void setAutoRenew(int autoRenew) {
-		this.autoRenew = autoRenew;
-	}
-
-	public String getClusterName() {
-		return clusterName;
-	}
-
-	public void setClusterName(String clusterName) {
-		this.clusterName = clusterName;
+	public static ApplyKeyReq getDefaultApplyKeyReq() {
+		ApplyKeyReq applyKeyReq = new ApplyKeyReq();
+		applyKeyReq.setDes("default");
+		applyKeyReq.setKey(DEFAULT_KEY_NAME);
+		applyKeyReq.setQps(100);
+		applyKeyReq.setAutoRenew(0);
+		applyKeyReq.setClusterName(ClusterInfoReq.DEFAULT_CLUSTER);
+		return applyKeyReq;
 	}
 }

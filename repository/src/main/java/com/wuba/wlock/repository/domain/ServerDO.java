@@ -33,7 +33,6 @@ public class ServerDO extends BaseDO<ServerDO> {
 
 	public static final String FIELD_SEQUENCE_ID = "sequence_id";
 	public static final String FIELD_SERVER_ADDR = "server";
-	public static final String FIELD_TELNET_PORT = "telnet_port";
 	public static final String FIELD_PAXOS_PORT = "paxos_port";
 	public static final String FIELD_UDP_PORT = "udp_port";
 	public static final String FIELD_CLUSTER_ID = "cluster_id";
@@ -51,9 +50,6 @@ public class ServerDO extends BaseDO<ServerDO> {
 
 	@TableField("server")
 	private String serverAddr;
-
-	@TableField("telnet_port")
-	private Integer telnetPort;
 
 	@TableField("paxos_port")
 	private Integer paxosPort;
@@ -92,12 +88,12 @@ public class ServerDO extends BaseDO<ServerDO> {
 			return false;
 		}
 		ServerDO serverDO = (ServerDO) o;
-		return getId().equals(serverDO.getId()) && sequenceId.equals(serverDO.sequenceId) && telnetPort.equals(serverDO.telnetPort) && paxosPort.equals(serverDO.paxosPort) && udpPort.equals(serverDO.udpPort) && state.equals(serverDO.state) && tcpPort.equals(serverDO.tcpPort) && Objects.equals(serverAddr, serverDO.serverAddr) && Objects.equals(clusterId, serverDO.clusterId) && Objects.equals(serverIp, serverDO.serverIp);
+		return getId().equals(serverDO.getId()) && sequenceId.equals(serverDO.sequenceId) && paxosPort.equals(serverDO.paxosPort) && udpPort.equals(serverDO.udpPort) && state.equals(serverDO.state) && tcpPort.equals(serverDO.tcpPort) && Objects.equals(serverAddr, serverDO.serverAddr) && Objects.equals(clusterId, serverDO.clusterId) && Objects.equals(serverIp, serverDO.serverIp);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), sequenceId, serverAddr, telnetPort, paxosPort, udpPort, clusterId, state, serverIp, tcpPort);
+		return Objects.hash(getId(), sequenceId, serverAddr, paxosPort, udpPort, clusterId, state, serverIp, tcpPort);
 	}
 
 }

@@ -19,25 +19,34 @@ import com.wuba.wlock.registry.admin.constant.ValidationConstant;
 import com.wuba.wlock.registry.admin.validators.ValidationCheck;
 import lombok.Data;
 
-@Data
-public class ServerInfoReq {
 
-	@ValidationCheck(allowEmpty = false, regexExpression = ValidationConstant.REGEX_NAME, filedDescription = "集群名")
-	private String clusterName;
-	
+@Data
+public class QuickInitReq {
+
 	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "序列号")
 	private int sequenceId;
 
 	@ValidationCheck(allowEmpty = false, regexExpression = ValidationConstant.IP_REGEXP, filedDescription = "IP")
 	private String ip;
-	
+
 	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "tcp端口")
 	private int tcpPort;
-	
+
 	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "paxos端口")
 	private int paxosPort;
-	
+
 	@ValidationCheck(allowEmpty = false, minValue = "1", filedDescription = "udp端口")
 	private int udpPort;
+
+	public ServerInfoReq toServerInfoReq(){
+		ServerInfoReq serverInfoReq = new ServerInfoReq();
+		serverInfoReq.setClusterName(ClusterInfoReq.DEFAULT_CLUSTER);
+		serverInfoReq.setSequenceId(sequenceId);
+		serverInfoReq.setIp(ip);
+		serverInfoReq.setTcpPort(tcpPort);
+		serverInfoReq.setPaxosPort(paxosPort);
+		serverInfoReq.setUdpPort(udpPort);
+		return serverInfoReq;
+	}
 
 }

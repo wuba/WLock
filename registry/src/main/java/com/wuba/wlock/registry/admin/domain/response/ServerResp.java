@@ -15,14 +15,16 @@
  */
 package com.wuba.wlock.registry.admin.domain.response;
 
+import lombok.Data;
+
+@Data
 public class ServerResp {
 
-	private long id;
+	private String id;
 	
 	private String server;
 	
-	private int telnetPort;
-	
+
 	private int paxosPort;
 	
 	private int udpPort;
@@ -32,69 +34,4 @@ public class ServerResp {
 	private String state;
 	
 	private int sequenceId;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getServer() {
-		return server;
-	}
-
-	public void setServer(String server) {
-		this.server = server;
-	}
-
-	public int getTelnetPort() {
-		return telnetPort;
-	}
-
-	public void setTelnetPort(int telnetPort) {
-		this.telnetPort = telnetPort;
-	}
-
-	public int getPaxosPort() {
-		return paxosPort;
-	}
-
-	public void setPaxosPort(int paxosPort) {
-		this.paxosPort = paxosPort;
-	}
-
-	public String getClusterName() {
-		return clusterName;
-	}
-
-	public void setClusterName(String clusterName) {
-		this.clusterName = clusterName;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public int getSequenceId() {
-		return sequenceId;
-	}
-
-	public void setSequenceId(int sequenceId) {
-		this.sequenceId = sequenceId;
-	}
-
-	public int getUdpPort() {
-		return udpPort;
-	}
-
-	public void setUdpPort(int udpPort) {
-		this.udpPort = udpPort;
-	}
-	
 }

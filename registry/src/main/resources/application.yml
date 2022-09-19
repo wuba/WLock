@@ -16,10 +16,10 @@
 
 server:
   port: 8888
-
+logging:
+  config: ${user.dir}/../config/logback-spring.xml
 registry:
-  env: online
-  token:
+  env: offline
 spring:
   application:
     name: WLock
@@ -28,26 +28,21 @@ spring:
       matching-strategy: ant_path_matcher
   datasource:
     dynamic:
-      primary: online
+      primary: offline
       datasource:
         offline:
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://test.db.cn:10000/test?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
-          username: user
-          password:
-        online:
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://test.db.cn:10000/test?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
-          username: user
-          password:
+          driver-class-name: org.h2.Driver
+          url: jdbc:h2:mem:testdb
+          username: test
+          password: test
 
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-
-redis_ip: test.redis.cn
-redis_port: 6379
+use_redis: false
+redis_ip: demo
+redis_port: 2001
 redis_auth:
 
 tcp:

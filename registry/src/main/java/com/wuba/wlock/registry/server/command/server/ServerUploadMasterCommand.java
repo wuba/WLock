@@ -57,20 +57,13 @@ public class ServerUploadMasterCommand implements ServerCommand{
 
     @Override
     public void execute(WLockRegistryContext context, RegistryProtocol reqProtocol) throws Exception {
-
-
         RegistryProtocol resProtocol;
         try {
             UploadGroupMaster.GroupMaster groupMaster = JSONObject.parseObject(new String(reqProtocol.getBody()), UploadGroupMaster.GroupMaster.class);
             // 开源去掉，限流需要
             channelManager.offer(new ChannelMessage(groupMaster.getClusterName(), ChannelMessageType.ServerChannel, context));
             resProtocol = ProtocolFactory.getInstance().createCommonAck(OptionCode.RES_UPLOAD_MASTER_CONFIG, MessageType.SUCCESS, reqProtocol.getSessionId());
-            threadPool.submit(new Runnable() {
-                @Override
-                public void run() {
-                    serverService.handleGroupMaster(groupMaster);
-                }
-            });
+            threadPool.submit(() -> serverService.handleGroupMaster(groupMaster));
         } catch (Exception e) {
             resProtocol = ProtocolFactory.getInstance().createCommonAck(OptionCode.RES_UPLOAD_MASTER_CONFIG, MessageType.ERROR, reqProtocol.getSessionId());
             log.error("{} upload paxos master config error ", context.getChannel().getRemoteIp());
@@ -78,25 +71,4 @@ public class ServerUploadMasterCommand implements ServerCommand{
         context.setResponse(resProtocol.toBytes());
     }
 
-
-
-
-    private long getRedisVersion(String cluster, int group) {
-        String value = redisUtil.getValue(RedisKeyConstant.getGroupVersionKey(cluster, group));
-        if (Strings.isNullOrEmpty(value)) {
-            return -1;
-        }
-        return Long.parseLong(value);
-    }
-
-    private GroupServerRefDO buildGroupServerRefDO(String clusterId, int groupId, String serverAddr, long version) {
-        GroupServerRefDO groupServerRefDO = new GroupServerRefDO();
-        groupServerRefDO.setClusterId(clusterId);
-        groupServerRefDO.setGroupId(groupId);
-        groupServerRefDO.setServerAddr(serverAddr);
-        groupServerRefDO.setVersion(version);
-        groupServerRefDO.setCreateTime(new Date());
-        groupServerRefDO.setUpdateTime(new Date());
-        return groupServerRefDO;
-    }
 }

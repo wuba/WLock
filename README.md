@@ -61,40 +61,41 @@ CPU：20 x Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz
 
 <img src="document/img/rt.png" height="60%" width="60%" />
 
-说明：以上对比测试的中数据，redis、zk、etcd相关非官方数据，均由我们在相同环境下实际压测得到。其中，对于qps的统计，客户端请求一次加锁再请求一次释放锁合并为一次计数，更详细的压测数据及压测条件可查看[开源对比](BENCHMARK.md)文档。
+说明：以上对比测试的中数据，redis、zk、etcd相关非官方数据，均由我们在相同环境下实际压测得到。其中，对于qps的统计，客户端请求一次加锁再请求一次释放锁合并为一次计数，更详细的压测数据及压测条件可查看[开源对比](document/BENCHMARK.md)文档。
 
 通过以上几个维度的测试分析，WLock的优势在于可靠性与系统吞吐量比较高，处理延迟略低于redis，但明显高于zookeeper与etcd，为此，对于分布式锁选型有以下建议:  
 1. 对可靠性要求不高，响应延迟比较敏感的场景，锁并发低于3W时可使用redis，高于3W建议用WLock；
 2. 对可靠性要求比较高，同时锁并发高于500的场景，可使用WLock；
 
 ## 快速使用
-```shell
-# 创建集群,添加节点,节点上线相关操作都可以通过 UI 快速完成
-http://localhost:8888/swagger-ui/index.html
-```
-#### 服务初始化步骤 : 
-1. **项目打包 :** 
 
-```shell
-mvn clean install
-```
 
-2. **创建数据表** - [相关 SQL](document/sql/create.sql)
-3. **部署注册中心并启动** - [详情](document/DEPLOY.md)
-4. **创建集群** - [详情](document/DEPLOY.md)
-5. **添加节点** - [详情](document/DEPLOY.md)
-6. **节点上线** - [详情](document/DEPLOY.md)
-7. **服务端初始化** - [详情](document/DEPLOY.md)
+#### 本地运行 WLock
+WLock 运行在所有主流操作系统上，只需要安装Java JDK 8 或更高版本。  
+
+#### 快速部署与启动 :  
+通过该启动方式，会创建默认集群（default_cluster）与默认秘钥（default_key），可快速部署注册中心与服务节点进行测试，[参考文档](document/QUICKDEPLOY.md)  
+
+#### 常规部署与启动 : 
+以下为生产环境正常服务部署、启动流程：
+1. **创建数据表** 
+	- wlock注册中心为方便快速启动,使用 H2 数据库,线上建议使用mysql,建表请参考 [ SQL](document/sql/create.sql).
+2. **调整数据库配置**[详情](document/DEPLOY.md#调整数据库配置)
+3. **部署注册中心并启动** - [详情](document/DEPLOY.md#部署注册中心并启动)
+4. **创建集群** - [详情](document/DEPLOY.md#通过swagger进行集群创建)
+5. **添加节点** - [详情](document/DEPLOY.md#通过swagger进行节点添加)
+6. **节点上线** - [详情](document/DEPLOY.md#通过swagger进行节点上线)
+7. **服务端初始化** - [详情](document/DEPLOY.md#服务端初始化)
 
 
 #### 客户端初始化
 
 **1. 注册秘钥**
+
 ```shell
 # 访问注册中心节点通过 swagger 快速注册秘钥
 http://localhost:8888/swagger-ui/index.html#/key-rest/addKeyUsingPOST
 ```
-
 
 **2. 依赖客户端jar包**
 
@@ -118,15 +119,15 @@ http://localhost:8888/swagger-ui/index.html#/key-rest/getKeyListUsingPOST
 **4. 初始化**
 
 ```java
-wLockClient = new WLockClient("test123_8", "127.0.0.1", 22020);
+wLockClient = new WLockClient("D484FEEF4F6E564920FABD0DE3C58D77", "127.0.0.1", 22020);
 String lockKey = "my_test_lock";
 WDistributedLock wdLock = wlockClient.newDistributeLock(lockKey);
 ```
 
 **参数说明 :**  
-**keyHash** ：秘钥名称,从秘钥配置中获取  
+**keyHash** ：秘钥hash key,从秘钥配置中获取  
 **registryIp** ：注册中心 ip  
-**registryPort** ：注册中心端口  
+**registryPort** ：注册中心端口
 **lockKey** ：分布式锁名称  
 **WDistributedLock** ：分布式锁对象封装
 
@@ -160,11 +161,11 @@ AcquireLockResult writeResult = writeLock.tryAcquireLock(1000 * 60, 1000 * 60);
 **以上只是简单使用demo,详细使用说明请参考[使用文档](document/USE.md)**
 
 ## 文档
-[开源对比](document/BENCHMARK.md)  
-[部署文档](document/DEPLOY.md)  
-[接口文档](document/USE.md)  
-[分布式锁源码实现对比](document/CONTRAST.md)
 
+[开源对比](document/BENCHMARK.md)   
+[部署文档](document/DEPLOY.md)   
+[接口文档](document/USE.md)   
+[分布式锁源码实现对比](document/CONTRAST.md)  
 ## 参考
 [How to do distributed locking](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)
 

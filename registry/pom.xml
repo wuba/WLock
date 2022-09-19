@@ -20,6 +20,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -90,14 +95,32 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>application.yml</exclude>
+                        <exclude>logback-spring.xml</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.4.3</version>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.8</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <stripVersion>false</stripVersion>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -109,12 +132,40 @@
                         <configuration>
                             <target>
                                 <mkdir dir="${project.basedir}/../target/registry"/>
-                                <copy file="${project.basedir}/target/${project.artifactId}-${project.version}.jar"
-                                      tofile="${project.basedir}/../target/registry/${project.artifactId}-${project.version}.jar"
-                                      overwrite="true"/>
+                                <mkdir dir="${project.basedir}/../target/registry/bin"/>
                                 <copy file="${project.basedir}/src/main/resources/bin/start.sh"
-                                      tofile="${project.basedir}/../target/registry/start.sh"
+                                      tofile="${project.basedir}/../target/registry/bin/start.sh"
                                       overwrite="true"/>
+                                <copy file="${project.basedir}/src/main/resources/bin/stop.sh"
+                                      tofile="${project.basedir}/../target/registry/bin/stop.sh"
+                                      overwrite="true"/>
+                                <copy file="${project.basedir}/src/main/resources/bin/quickStart.sh"
+                                      tofile="${project.basedir}/../target/registry/bin/quickStart.sh"
+                                      overwrite="true"/>
+                                <mkdir dir="${project.basedir}/../target/registry/config"/>
+                                <copy file="${project.basedir}/src/main/resources/application.yml"
+                                      tofile="${project.basedir}/../target/registry/config/application.yml"
+                                      overwrite="true"/>
+                                <copy file="${project.basedir}/src/main/resources/logback-spring.xml"
+                                      tofile="${project.basedir}/../target/registry/config/logback-spring.xml"
+                                      overwrite="true"/>
+                                <copy file="${project.basedir}/src/main/resources/schema.sql"
+                                      tofile="${project.basedir}/../target/registry/config/schema.sql"
+                                      overwrite="true"/>
+                                <mkdir dir="${project.basedir}/../target/registry/lib"/>
+                                <copy file="${project.basedir}/target/${project.artifactId}-${project.version}.jar"
+                                      tofile="${project.basedir}/../target/registry/lib/${project.artifactId}-${project.version}.jar"
+                                      overwrite="true"/>
+                                <copydir src="${project.basedir}/target/dependency"
+                                         dest="${project.basedir}/../target/registry/lib"/>
+                                <zip destfile="${project.basedir}/../target/registry.zip">
+                                    <fileset dir="${project.basedir}/../target/registry">
+                                        <include name="bin/"/>
+                                        <include name="config/"/>
+                                        <include name="lib/"/>
+                                    </fileset>
+                                </zip>
+                                <delete dir="${project.basedir}/../target/registry" includeemptydirs="true"/>
                             </target>
                         </configuration>
                         <goals>

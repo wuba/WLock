@@ -22,27 +22,34 @@ import com.wuba.wlock.registry.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
 
 @Slf4j
 @Component
 public class RedisClusterConfSubscribeWorker implements Runnable {
 	@Autowired
-    RedisUtil redisUtil;
+	RedisUtil redisUtil;
 
 	@Autowired
 	PushMessageListener pushMessageListener;
 
 	@Override
 	public void run() {
-		
 		try {
-			SubscribeClient subClient = new SubscribeClient(redisUtil.getJedisLink());
-			log.info("redis subscriber will start!");
-			subClient.clusterConfSubscribe(pushMessageListener, RedisKeyConstant.REDIS_SUBSCRIBE_CHANNEL);
+			if (redisUtil.isUseRedis()) {
+				Jedis jedisLink = redisUtil.getJedisLink();
+				if (jedisLink != null) {
+					SubscribeClient subClient = new SubscribeClient(jedisLink);
+					log.info("redis subscriber will start!");
+					subClient.clusterConfSubscribe(pushMessageListener, RedisKeyConstant.REDIS_SUBSCRIBE_CHANNEL);
+				} else {
+					log.info("no use redis .");
+				}
+			}
 		} catch (Exception e) {
 			log.info("RedisClusterConfSubscribeTask error", e);
 		}
-		
+
 	}
-	
+
 }

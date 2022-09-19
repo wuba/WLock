@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package java.com.wuba.wlock.client;
+package com.wuba.wlock.client;
 
 import com.wuba.wlock.client.WDistributedLock;
 import com.wuba.wlock.client.WLockClient;
-import com.wuba.wlock.client.listener.RenewListener;
+import com.wuba.wlock.client.exception.ParameterIllegalException;
 import com.wuba.wlock.client.lockresult.AcquireLockResult;
 import com.wuba.wlock.client.lockresult.LockResult;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.util.Random;
 
 
-public class RenewLockTest {
+public class ReleaseLockTest {
+
 	WLockClient wLockClient;
 	WDistributedLock wdLock;
 	String lock;
@@ -44,77 +44,90 @@ public class RenewLockTest {
 		}
 	}
 
-	@Test
-	public void testRenew() {
+	/**
+	 * 不存在，返回失败
+	 */
+	@org.junit.Test
+	public void testReleaseLockVersionError() {
 		try {
-			wdLock.tryAcquireLock(5000, 8000, 3000, new RenewListener() {
-				@Override
-				public void onRenewSuccess(String lockkey) {
-				}
-
-				@Override
-				public void onRenewFailed(String lockkey) {
-				}
-			}, null);
-			Thread.sleep(15000);
-			LockResult b = wdLock.releaseLock();
-			Assert.assertTrue(b.isSuccess());
+			LockResult releaseLock = wdLock.releaseLock();
+			Assert.assertFalse(releaseLock.isSuccess());
 		} catch (Exception e) {
 		}
 	}
 
-
-	@Test
-	public void testAutoRenew() {
+	/**
+	 * 锁存在，版本号不一致
+	 */
+	@org.junit.Test
+	public void testReleaseLock() {
 		try {
+			AcquireLockResult lockResult0 = wdLock.tryAcquireLock(5000, 10000);
+			Assert.assertTrue(lockResult0.isSuccess());
+			long version = lockResult0.getLockVersion();
+			Assert.assertFalse(wdLock.releaseLock().isSuccess());
+			Assert.assertTrue(wdLock.releaseLock().isSuccess());
+		} catch (Exception e) {
+		}
+	}
+
+	/**
+	 * 存在，自己不是owner
+	 */
+	@org.junit.Test
+	public void testReleaseLockOwnerOther() {
+		try {
+			final long[] version = {0L};
 			Thread thread = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					try {
 						WDistributedLock wdLock = wLockClient.newDistributeLock(lock);
-						wdLock.tryAcquireLock(5000, 8000, 3000, new RenewListener() {
-							@Override
-							public void onRenewSuccess(String lockkey) {
-							}
-
-							@Override
-							public void onRenewFailed(String lockkey) {
-							}
-						}, null);
-						Thread.sleep(15000);
-						LockResult b = wdLock.releaseLock();
-						Assert.assertTrue(b.isSuccess());
-					} catch (Exception e) {
+						AcquireLockResult lockResult = wdLock.tryAcquireLock(10000, 8000);
+						Assert.assertTrue(lockResult.isSuccess());
+						version[0] = lockResult.getLockVersion();
+						try {
+							Thread.sleep(9000);
+						} catch (InterruptedException e) {
+						}
+						Assert.assertTrue(wdLock.releaseLock().isSuccess());
+					} catch (ParameterIllegalException e) {
 					}
 				}
 			});
+
 			Thread thread1 = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					try {
-						Thread.sleep(1000);
 						WDistributedLock wdLock = wLockClient.newDistributeLock(lock);
-						AcquireLockResult acquireLockResult = wdLock.tryAcquireLock(5000, 80000, 3000, new RenewListener() {
-							@Override
-							public void onRenewSuccess(String lockkey) {
-							}
-
-							@Override
-							public void onRenewFailed(String lockkey) {
-							}
-						}, null);
-						Assert.assertTrue(acquireLockResult.isSuccess());
-						Thread.sleep(15000);
-						LockResult b = wdLock.releaseLock();
-						Assert.assertTrue(b.isSuccess());
-					} catch (Exception e) {
+						Assert.assertFalse(wdLock.releaseLock().isSuccess());
+					} catch (ParameterIllegalException e) {
+						e.printStackTrace();
 					}
 				}
 			});
 			thread.start();
-			Thread.sleep(15000);
+			Thread.sleep(2000);
 			thread1.start();
 			thread1.join();
+		} catch (Exception e) {
+		}
+
+
+	}
+
+
+	/**
+	 * 存在，成功释放锁
+	 */
+	@org.junit.Test
+	public void testReleaseLockNormal() {
+		try {
+			AcquireLockResult lockResult = wdLock.tryAcquireLock(5000, 7000);
+			Assert.assertTrue(lockResult.isSuccess());
+			long lockVersion = lockResult.getLockVersion();
+			Assert.assertTrue(wdLock.releaseLock().isSuccess());
 		} catch (Exception e) {
 		}
 	}
