@@ -39,7 +39,7 @@ sh quickStart.sh quickinit <sequence_id> <ip> <tcp_port>  <paxos_port> <udp_port
 ```shell
 # 1. 执行初始化之前请确认 config 下的registry.properties 中的 registryServerIp配置是不是注册中心 ip
 # 2. 确认 server.properties 配置的 listenPort 是不是注册中心新增节点的 tcp 端口,二者需要保持一致
-# 3. 由于服务端使用了 RocketDB,mac 的m1 芯片不支持运行 RocketDB,所以建议服务端部署服务器运行
+# 3. 由于服务端使用了 RocksDB,mac 的m1 芯片不支持运行 RocksDB,所以建议服务端部署服务器运行
 cd target
 unzip -d ./server server.zip
 sh server/bin/start.sh
@@ -88,7 +88,7 @@ sh bin/start.sh
 ```shell
 # 1. 执行初始化之前请确认 config 下的registry.properties 中的 registryServerIp配置是不是注册中心 ip
 # 2. 确认 server.properties 配置的 listenPort 是不是注册中心新增节点的 tcp 端口,二者需要保持一致
-# 3. 由于服务端使用了 RocketDB,mac 的m1 芯片不支持运行 RocketDB,所以建议服务端部署服务器运行
+# 3. 由于服务端使用了 RocksDB,mac 的m1 芯片不支持运行 RocksDB,所以建议服务端部署服务器运行
 cd target
 unzip -d ./server server.zip
 sh server/bin/start.sh
