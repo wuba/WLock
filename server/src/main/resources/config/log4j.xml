@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <properties>
-        <property name="LOG_HOME">server/log/</property>
+        <property name="LOG_HOME">${sys:user.dir}/log/</property>
         <property name="FILE_NAME">wlock</property>
         <property name="TRACE_LOG">trace</property>
         <property name="LOG_LEVEL">info</property>

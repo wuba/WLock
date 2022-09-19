@@ -23,12 +23,12 @@
 
 CLASS_PATH=""
 SERVICE_NAME=wlock
-DIR="$(cd "$(dirname "$0")" || exit;pwd)/../.."
-PID_PATH="$DIR"/server/tmp/pid
+DIR="$(cd "$(dirname "$0")" || exit;pwd)/.."
+PID_PATH="$DIR"/tmp/pid
 PID_FILE="$PID_PATH"/"$SERVICE_NAME"
-sh "$DIR"/server/bin/rshutdown.sh
-mkdir -p "$DIR"/server/tmp/pid/
-mkdir -p "$DIR"/server/log/gc.log
+sh "$DIR"/bin/rshutdown.sh
+mkdir -p "$DIR"/tmp/pid/
+mkdir -p "$DIR"/log/gc.log
 
 checkJdkUtil() {
   # check tools.jar
@@ -65,7 +65,7 @@ checkIsRunning() {
 initClassPath() {
   # class path
   CLASS_PATH=.:"$JAVA_HOME"/lib/tools.jar
-  for jar in "$DIR"/server/lib/*.jar; do
+  for jar in "$DIR"/lib/*.jar; do
     CLASS_PATH=$CLASS_PATH:$jar
   done
 }
@@ -75,7 +75,7 @@ main() {
   checkIsRunning PID_FILE
   initClassPath
   MAIN_CLASS=com.wuba.wlock.server.bootstrap.Main
-  java -Xmx8g -Xms8g -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:NewRatio=2 -XX:+PrintClassHistogram -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintHeapAtGC -Xloggc:server/log/gc.log -XX:SurvivorRatio=8 -XX:MaxGCPauseMillis=200 -classpath "$CLASS_PATH" -Duser.dir="$DIR"/server $MAIN_CLASS >>/dev/null 2>&1 &
+  java -Xmx8g -Xms8g -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:NewRatio=2 -XX:+PrintClassHistogram -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintHeapAtGC -Xloggc:server/log/gc.log -XX:SurvivorRatio=8 -XX:MaxGCPauseMillis=200 -classpath "$CLASS_PATH" -Duser.dir="$DIR" $MAIN_CLASS >>/dev/null 2>&1 &
   echo pid:$!
   echo $! >"$PID_PATH"/"$SERVICE_NAME"
 }
