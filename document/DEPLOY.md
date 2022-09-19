@@ -43,7 +43,7 @@ sh bin/start.sh
 
 
 ### 服务端初始化
-> 按照添加节点进行项目启动 ,启动节点数量和添加节点数量相同
+> 依次启动已添加的服务节点  
 
 ```shell
 # 1. 执行初始化之前请确认 config 下的registry.properties 中的 registryServerIp配置是不是注册中心 ip
