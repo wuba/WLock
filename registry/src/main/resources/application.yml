@@ -16,7 +16,8 @@
 
 server:
   port: 8888
-
+logging:
+  config: ${user.dir}/../config/logback-spring.xml
 registry:
   env: offline
 spring:

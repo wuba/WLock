@@ -33,7 +33,7 @@ initConfigPath() {
 main() {
   initConfigPath
   MAIN_CLASS=com.wuba.wlock.registry.Application
-  java -Xmx8g -Xms8g -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:NewRatio=2 -XX:SurvivorRatio=8 -XX:MaxGCPauseMillis=200 -classpath $CLASS_PATH -Dspring.config.location="$DIR"/../config/ $MAIN_CLASS #>>/dev/null 2>&1 &
+  java -Xmx8g -Xms8g -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:NewRatio=2 -XX:SurvivorRatio=8 -XX:MaxGCPauseMillis=200 -classpath $CLASS_PATH -Dspring.config.location="$DIR"/../config/ $MAIN_CLASS >>/dev/null 2>&1 &
 }
 
 main

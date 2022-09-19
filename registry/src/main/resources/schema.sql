@@ -81,7 +81,6 @@ CREATE TABLE `t_server` (
 `id` bigint(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '序号',
 `sequence_id` int(11) NOT NULL COMMENT '序列Id',
 `server` varchar(100) NOT NULL COMMENT 'IP+Port',
-`telnet_port` int(11) NOT NULL COMMENT 'telnet端口号',
 `paxos_port` int(11) NOT NULL COMMENT 'paxos端口号',
 `udp_port` int(11) NOT NULL COMMENT 'udp端口号',
 `cluster_id` varchar(100) NOT NULL COMMENT '集群名',
