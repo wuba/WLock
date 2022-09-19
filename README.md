@@ -61,7 +61,7 @@ CPU：20 x Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz
 
 <img src="document/img/rt.png" height="60%" width="60%" />
 
-说明：以上对比测试的中数据，redis、zk、etcd相关非官方数据，均由我们在相同环境下实际压测得到。其中，对于qps的统计，客户端请求一次加锁再请求一次释放锁合并为一次计数，更详细的压测数据及压测条件可查看[开源对比](BENCHMARK.md)文档。
+说明：以上对比测试的中数据，redis、zk、etcd相关非官方数据，均由我们在相同环境下实际压测得到。其中，对于qps的统计，客户端请求一次加锁再请求一次释放锁合并为一次计数，更详细的压测数据及压测条件可查看[开源对比](document/BENCHMARK.md)文档。
 
 通过以上几个维度的测试分析，WLock的优势在于可靠性与系统吞吐量比较高，处理延迟略低于redis，但明显高于zookeeper与etcd，为此，对于分布式锁选型有以下建议:  
 1. 对可靠性要求不高，响应延迟比较敏感的场景，锁并发低于3W时可使用redis，高于3W建议用WLock；
@@ -71,20 +71,21 @@ CPU：20 x Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz
 
 
 #### 本地运行 WLock
-WLock 运行在所有主流操作系统上，只需要安装 Java JDK 8 或更高版本。要检查，请运行`java -version`：
-```
-$ java -version
-java version "1.8.0_121"
-```
+WLock 运行在所有主流操作系统上，只需要安装Java JDK 8 或更高版本。  
 
-#### 服务初始化步骤 : 
+#### 快速部署与启动 :  
+通过该启动方式，会创建默认集群（default_cluster）与默认秘钥（default_key），可快速部署注册中心与服务节点进行测试，[参考文档](document/QUICKDEPLOY.md)  
+
+#### 常规部署与启动 : 
+以下为生产环境正常服务部署、启动流程：
 1. **创建数据表** 
-	- wlock 注册中心,为方便快速启动,使用 H2 数据库,线上建议使用 mysql,建表请参考 [ SQL](document/sql/create.sql).
-2. **部署注册中心并启动** - [详情](document/DEPLOY.md)
-3. **创建集群** - [详情](document/DEPLOY.md)
-4. **添加节点** - [详情](document/DEPLOY.md)
-5. **节点上线** - [详情](document/DEPLOY.md)
-6. **服务端初始化** - [详情](document/DEPLOY.md)
+	- wlock注册中心为方便快速启动,使用 H2 数据库,线上建议使用mysql,建表请参考 [ SQL](document/sql/create.sql).
+2. **调整数据库配置**[详情](document/DEPLOY.md#调整数据库配置)
+3. **部署注册中心并启动** - [详情](document/DEPLOY.md#部署注册中心并启动)
+4. **创建集群** - [详情](document/DEPLOY.md#通过swagger进行集群创建)
+5. **添加节点** - [详情](document/DEPLOY.md#通过swagger进行节点添加)
+6. **节点上线** - [详情](document/DEPLOY.md#通过swagger进行节点上线)
+7. **服务端初始化** - [详情](document/DEPLOY.md#服务端初始化)
 
 
 #### 客户端初始化
@@ -126,7 +127,7 @@ WDistributedLock wdLock = wlockClient.newDistributeLock(lockKey);
 **参数说明 :**  
 **keyHash** ：秘钥名称,从秘钥配置中获取  
 **registryIp** ：注册中心 ip  
-**registryPort** ：注册中心端口  
+**registryPort** ：注册中心端口
 **lockKey** ：分布式锁名称  
 **WDistributedLock** ：分布式锁对象封装
 
