@@ -181,6 +181,14 @@ AcquireLockResult writeResult = writeLock.tryAcquireLock(1000 * 60, 1000 * 60);
 ## 开源许可
 WLock项目基于[Apache License 2.0](./LICENSE)协议开源
 
+
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/wuba/WLock.svg)](https://starchart.cc/wuba/WLock)
+
+
+
 ## 联系我们
 <img src="document/img/wlock-wechat.png"/>  
 欢迎添加58技术微信账号，加入wlock技术讨论群~
