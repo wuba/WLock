@@ -83,12 +83,12 @@ public class GetMigrateConfigCommand implements ServerCommand{
                     }
                 } else {
                     // 没有处于迁移状态 , 服务端不作处理
-                    log.info("Not in the migrated state");
+                    log.debug("Not in the migrated state");
                     resProtocol = ProtocolFactory.getInstance().createCommonAck(OptionCode.RES_GROUP_MIGRATE_CONFIG, MessageType.ERROR, reqProtocol.getSessionId());
                 }
             } else {
                 // 没有处于迁移状态 , 服务端不作处理
-                log.info("Not in the migrated state");
+                log.debug("Not in the migrated state");
                 resProtocol = ProtocolFactory.getInstance().createCommonAck(OptionCode.RES_GROUP_MIGRATE_CONFIG, MessageType.ERROR, reqProtocol.getSessionId());
             }
         } catch (Exception e) {
