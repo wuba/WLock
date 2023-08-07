@@ -166,6 +166,7 @@ AcquireLockResult writeResult = writeLock.tryAcquireLock(1000 * 60, 1000 * 60);
 [部署文档](document/DEPLOY.md)   
 [接口文档](document/USE.md)   
 [分布式锁源码实现对比](document/CONTRAST.md)  
+[其它实现原理介绍文档](https://www.zhihu.com/column/c_1669293131785773056)  
 ## 参考
 [How to do distributed locking](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)
 
