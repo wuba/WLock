@@ -169,8 +169,12 @@ class ReadWorker implements Runnable {
 				if (regList.size() > 0) {
 					synchronized (locker) {
 						for (RegistryNIOChannel channel : regList) {
-							logger.info(Version.INFO + ", register a channel " + channel.toString());
-							channel.getSockChannel().register(selector, SelectionKey.OP_READ, channel);
+							try {
+								logger.info(Version.INFO + ", register a channel " + channel.toString());
+								channel.getSockChannel().register(selector, SelectionKey.OP_READ, channel);
+							} catch (Exception e) {
+								logger.error(Version.INFO + ", register channel to selector failed.", e);
+							}
 						}
 						regList.clear();
 					}
