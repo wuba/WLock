@@ -15,10 +15,12 @@
  */
 package com.wuba.wlock.registry.server.handler;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wuba.wlock.common.exception.ProtocolException;
 import com.wuba.wlock.common.registry.protocol.MessageType;
 import com.wuba.wlock.common.registry.protocol.OptionCode;
 import com.wuba.wlock.common.registry.protocol.RegistryProtocol;
+import com.wuba.wlock.common.registry.protocol.request.GetPaxosConfig;
 import com.wuba.wlock.registry.server.command.Command;
 import com.wuba.wlock.registry.server.command.ResponseAckCommand;
 import com.wuba.wlock.registry.server.command.client.ClientConfigGetCommand;
@@ -32,6 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +44,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class AsyncInvokerHandler implements InvokerHandler {
 	private static final byte PROTOCOL_VERSION = 1;
+
+	private static Map<String, Long> serverTimeMap = new ConcurrentHashMap<String, Long>();
 
 	ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1,0L,
 			TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), new ThreadRenameFactory("AsyncInvokerHandler-Thread"));
@@ -105,7 +111,9 @@ public class AsyncInvokerHandler implements InvokerHandler {
 	public void invoke(final WLockRegistryContext context) throws Exception {
 		RegistryProtocol reqProtocol = RegistryProtocol.fromBytes(context.getRequest());
 		Command command = command(reqProtocol, context);
-
+		if (speedLimit(command, reqProtocol)) {
+			return;
+		}
 		threadPool.submit(new Runnable() {
 			@Override
 			public void run() {
@@ -119,4 +127,24 @@ public class AsyncInvokerHandler implements InvokerHandler {
 		});
 	}
 
+	private boolean speedLimit(Command command, RegistryProtocol reqProtocol) {
+		if (command instanceof ServerGetPaxosConfigCommand) {
+			try {
+				GetPaxosConfig.ServerConfig getPaxos = JSONObject.parseObject(reqProtocol.getBody(), GetPaxosConfig.ServerConfig.class);
+				String ipPort = getPaxos.getIp() + ":" +getPaxos.getPort();
+
+				synchronized (ipPort.intern()) {
+					Long time = serverTimeMap.get(ipPort);
+					if (time != null && System.currentTimeMillis() - time < 2000) {
+						log.warn("speed Limit ipPort: {}", ipPort);
+						return true;
+					}
+					serverTimeMap.put(ipPort, System.currentTimeMillis());
+				}
+			} catch (Exception e) {
+				log.warn("speed Limit error", e);
+			}
+		}
+		return false;
+	}
 }
