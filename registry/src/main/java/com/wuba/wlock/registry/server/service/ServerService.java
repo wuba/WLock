@@ -135,6 +135,7 @@ public class ServerService {
         Set<Integer> nodeIds = new HashSet<>();
         Map<Integer, ServerNode> nodeMap = new HashMap<>();
         Map<String, Integer> serverToNodeId = new HashMap<>();
+        Set<Integer> onlineNodeIds = new HashSet<>();
         if (CollectionUtils.isNotEmpty(serverDos)) {
             Map<Integer, String> oldNodeMap;
             if (serverDO.getState() != ServerState.online.getValue()) {
@@ -146,6 +147,9 @@ public class ServerService {
                 nodeMap.put(server.getSequenceId(), serverNode);
                 serverToNodeId.put(server.getServerAddr(), server.getSequenceId());
                 nodeIds.add(server.getSequenceId());
+                if (server.getState() == ServerState.online.getValue()) {
+                    onlineNodeIds.add(server.getSequenceId());
+                }
             });
             oldNodeMap = serverDos.stream().filter(server -> server.getState() == ServerState.online.getValue()).collect(Collectors.toMap(ServerDO::getSequenceId, server -> server.getServerIp() + GetPaxosConfRes.SEP + server.getTcpPort() + GetPaxosConfRes.SEP + server.getPaxosPort() + GetPaxosConfRes.SEP + server.getUdpPort(), (a, b) -> b));
             res.setServerMap(oldNodeMap);
@@ -167,7 +171,7 @@ public class ServerService {
                     noUseMasterGroups.add(i);
                     noUseMasterLoadBalanceGroups.add(i);
                 }
-                groupNodeMap.put(i, nodeIds);
+                groupNodeMap.put(i, onlineNodeIds);
             });
         } else {
             // 拉取到的是每个 group 的节点情况
