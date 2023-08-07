@@ -225,5 +225,21 @@ public class RegistryServerPool {
 			RegistryDaemonChecker.check(task);
 		}
 	}
-	
+
+	public RegistryServer getOtherServer(String hashKey, RegistryServer curServer) throws RegistryClientRuntimeException, IOException {
+		List<ServerConfig> confs = this.registryConfig.getAllServerConfig();
+		Random rand = new Random();
+		int randomNum = rand.nextInt(confs.size());
+		if (curServer != null && confs.get(randomNum).equals(curServer.getServerConfig())) {
+			randomNum = (randomNum + 1) % confs.size();
+		}
+
+		String curServerIp = null;
+		if (curServer != null) {
+			curServerIp = curServer.getServerConfig().getIp();
+		}
+
+		logger.info(Version.INFO + " current registry server " + curServerIp + " error. get other server " + confs.get(randomNum).getIp());
+		return new RegistryServer(confs.get(randomNum), this, randomNum, hashKey);
+	}
 }

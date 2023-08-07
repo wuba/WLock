@@ -147,21 +147,28 @@ public class RegistryKeyFactory {
 		logger.info(Version.INFO + ", init key path " + keyPath + " success!");
 		return registryKey;
 	}
-	
+
 	private void updateKeyConfigs(String key) throws CommunicationException, RegistryClientRuntimeException, IOException, ConnectTimeoutException, Exception {
 		ClientKeyEntity keyObj = new ClientKeyEntity(key);
 		RegistryProtocol protocol = RequestProtocolFactory.getInstacne().getCongigGetRequest(ClientKeyEntity.toJsonString(keyObj).getBytes());
 		RegistryProtocol response = null;
+		RegistryServer server = null;
 		try {
-			RegistryServer server = serPool.getServer(key);
+			server = serPool.getServer(key);
 			response = server.syncInvoke(protocol, RegistryClientConfig.WAIT_COUNT, RegistryClientConfig.GET_CONFIG_TIMEOUT);
 		} catch (Exception e) {
+			RegistryServer otherServer = null;
 			try {
+				otherServer = serPool.getOtherServer(key, server);
+				response = otherServer.syncInvoke(protocol, RegistryClientConfig.WAIT_COUNT, RegistryClientConfig.GET_CONFIG_TIMEOUT);
+
 				serPool.replaceRegistryServer(key);
-				RegistryServer server = serPool.getServer(key);
-				response = server.syncInvoke(protocol, RegistryClientConfig.WAIT_COUNT, RegistryClientConfig.GET_CONFIG_TIMEOUT);
 			} catch (Exception ex) {
 				throw new Exception(Version.INFO + ", get config from registry server failed!", ex);
+			} finally {
+				if (otherServer != null) {
+					otherServer.destroy();
+				}
 			}
 		}
 		ProtocolParser.parse(response);
