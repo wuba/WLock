@@ -26,7 +26,7 @@ public class LockContext implements Comparable<LockContext>{
 	private long lockVersion;
 	private AtomicInteger aquiredCount = new AtomicInteger(0);
 	private InternalLockOption lockOption;
-	private int expireMills;
+	private long expireMills;
 	private long expireTimestamp = Long.MAX_VALUE;
 	private AtomicBoolean released = new AtomicBoolean(false);
 
@@ -38,7 +38,7 @@ public class LockContext implements Comparable<LockContext>{
 		this.aquiredCount.set(aquiredCount);
 		this.lockOption = lockOption;
 	}
-	
+
 	public String getLockContextkey() {
 		return lockContextkey;
 	}
@@ -86,11 +86,11 @@ public class LockContext implements Comparable<LockContext>{
 		this.aquiredCount = aquiredCount;
 	}
 
-	public int getExpireMills() {
+	public long getExpireMills() {
 		return expireMills;
 	}
 
-	public void setExpireMills(int expireMills) {
+	public void setExpireMills(long expireMills) {
 		this.expireMills = expireMills;
 	}
 
@@ -101,11 +101,15 @@ public class LockContext implements Comparable<LockContext>{
 	public void setExpireTimestamp(long expireTimestamp) {
 		this.expireTimestamp = expireTimestamp;
 	}
-	
-	public void updateExpireTime(int expireTime) {
+
+	public void updateExpireTime() {
+		this.expireTimestamp = TimeUtil.getCurrentMills() + expireMills;
+	}
+
+	public void updateExpireTime(long expireTime) {
 		this.expireTimestamp = TimeUtil.getCurrentMills() + expireTime;
 	}
-	
+
 	public boolean isExpired() {
 		return this.expireTimestamp < TimeUtil.getCurrentMills() ? true : false;
 	}
@@ -117,7 +121,7 @@ public class LockContext implements Comparable<LockContext>{
 	public void setReleased(AtomicBoolean released) {
 		this.released = released;
 	}
-	
+
 	public boolean isReleased() {
 		return this.released.get();
 	}
@@ -153,33 +157,25 @@ public class LockContext implements Comparable<LockContext>{
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		LockContext other = (LockContext) obj;
 		if (lockContextkey == null) {
-			if (other.lockContextkey != null) {
+			if (other.lockContextkey != null)
 				return false;
-			}
-		} else if (!lockContextkey.equals(other.lockContextkey)) {
+		} else if (!lockContextkey.equals(other.lockContextkey))
 			return false;
-		}
-		if (lockVersion != other.lockVersion) {
+		if (lockVersion != other.lockVersion)
 			return false;
-		}
 		if (lockkey == null) {
-			if (other.lockkey != null) {
+			if (other.lockkey != null)
 				return false;
-			}
-		} else if (!lockkey.equals(other.lockkey)) {
+		} else if (!lockkey.equals(other.lockkey))
 			return false;
-		}
 		return true;
 	}
 

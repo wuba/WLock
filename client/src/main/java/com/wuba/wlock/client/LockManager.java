@@ -17,12 +17,14 @@ package com.wuba.wlock.client;
 
 import com.wuba.wlock.client.communication.LockTypeEnum;
 import com.wuba.wlock.client.communication.ReadWriteLockTypeEnum;
+import com.wuba.wlock.client.communication.WatchPolicy;
 import com.wuba.wlock.client.config.Factor;
 import com.wuba.wlock.client.config.Version;
 import com.wuba.wlock.client.exception.ParameterIllegalException;
 import com.wuba.wlock.client.listener.HoldLockListener;
 import com.wuba.wlock.client.listener.LockExpireListener;
 import com.wuba.wlock.client.listener.RenewListener;
+import com.wuba.wlock.client.listener.WatchListener;
 import com.wuba.wlock.client.lockresult.LockResult;
 import com.wuba.wlock.client.protocol.ResponseStatus;
 import com.wuba.wlock.client.service.LockService;
@@ -284,7 +286,7 @@ public class LockManager {
 	 * @param lockkey
 	 * @param threadID
 	 */
-	public void updateExpireTime(String lockkey, long threadID, int lockType, int lockOpcode, int expireTime) {
+	public void updateExpireTime(String lockkey, long threadID, int lockType, int lockOpcode, long expireTime) {
 		if (lockkey == null) {
 			logger.error(Version.INFO + " update lock expire time failed.");
 			return;
@@ -300,7 +302,7 @@ public class LockManager {
 	 * 更新锁过期时间
 	 * @param lockContext
 	 */
-	public void updateExpireTime(LockContext lockContext, int expireTime) {
+	public void updateExpireTime(LockContext lockContext, long expireTime) {
 		lockContext.updateExpireTime(expireTime);
 		expireLock.lock();
 		try {
@@ -406,7 +408,8 @@ public class LockManager {
 		private int renewInterval;
 		private RenewListener renewListener;
 		private HoldLockListener holdLockListener;
-		private int expireTime;
+		private WatchListener watchListener;
+		private long expireTime;
 		private LockContext lockContext;
 		private LockService lockService;
 		private boolean isCanceled = false;
@@ -423,6 +426,7 @@ public class LockManager {
 			this.lockkey = lockkey;
 			this.lockContext = lockContext;
 			this.lockversion = lockContext.getLockVersion();
+			this.watchListener = lockContext.getLockOption().getWatchPolicy() == WatchPolicy.Continue ? lockContext.getLockOption().getWatchListener() : null;
 			this.ownerThreadID = this.lockContext.getLockOption().getThreadID();
 			this.renewInterval = this.lockContext.getLockOption().getRenewInterval();
 			this.renewListener = this.lockContext.getLockOption().getRenewListener();
@@ -461,6 +465,9 @@ public class LockManager {
 							if (holdLockListener != null) {
 								holdLockListener.onOwnerChange(lockkey, ResponseStatus.toStr(renewRes.getResponseStatus()));
 							}
+							if (watchListener != null) {
+								watchListener.onLockChange(lockkey, lockversion);
+							}
 							if (this.isTouch) {
 								logger.error(Version.INFO + ", lock acquired, but not touch success within 10s, lockkey : " + this.lockkey);
 							} else {
@@ -494,7 +501,7 @@ public class LockManager {
 					// 续约失败
 					if (touchTimes <= MAX_TOUCH_TIMES) {
 						// 首次获取到锁后，一直没续约成功
-						int interval = Math.max(this.renewInterval, this.expireTime/3);
+						int interval = (int) Math.max(this.renewInterval, this.expireTime/3);
 						LockManager.this.sheduleRenew(this, Math.min(1000, interval));
 						return;
 					} else {
@@ -516,8 +523,9 @@ public class LockManager {
 					cancelRenewTask(this.lockkey, this.ownerThreadID, lockType, lockOpcode);
 				}
 			}
-		}
 
+
+		}
 
 		private void dealHoldExpire() {
 			long lastTime = realExpireTimeStamp - System.currentTimeMillis() - renewInterval;

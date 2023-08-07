@@ -45,7 +45,7 @@ public class WWriteLock implements WLock {
 	}
 
 	@Override
-	public AcquireLockResult tryAcquireLock(int expireTime, int maxWaitTime) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLock(long expireTime, int maxWaitTime) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setLockType((byte) LockTypeEnum.readWriteReentrantLock.getValue());
 		lockOption.setLockOpcode((byte) ReadWriteLockTypeEnum.Write.getOpcode());
@@ -57,7 +57,7 @@ public class WWriteLock implements WLock {
 	}
 
 	@Override
-	public AcquireLockResult tryAcquireLock(int expireTime, int maxWaitTime, int renewInterval) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLock(long expireTime, int maxWaitTime, int renewInterval) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setLockType((byte) LockTypeEnum.readWriteReentrantLock.getValue());
 		lockOption.setLockOpcode((byte) ReadWriteLockTypeEnum.Write.getOpcode());
@@ -70,7 +70,7 @@ public class WWriteLock implements WLock {
 	}
 
 	@Override
-	public AcquireLockResult tryAcquireLock(int expireTime, int maxWaitTime, LockExpireListener lockExpireListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLock(long expireTime, int maxWaitTime, LockExpireListener lockExpireListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setLockType((byte) LockTypeEnum.readWriteReentrantLock.getValue());
 		lockOption.setLockOpcode((byte) ReadWriteLockTypeEnum.Write.getOpcode());
@@ -83,7 +83,7 @@ public class WWriteLock implements WLock {
 	}
 
 	@Override
-	public AcquireLockResult tryAcquireLock(int expireTime, int maxWaitTime, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLock(long expireTime, int maxWaitTime, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setLockType((byte) LockTypeEnum.readWriteReentrantLock.getValue());
 		lockOption.setLockOpcode((byte) ReadWriteLockTypeEnum.Write.getOpcode());
@@ -107,7 +107,7 @@ public class WWriteLock implements WLock {
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
 	@Override
-	public AcquireLockResult tryAcquireLock(int expireTime, HoldLockListener holdLockListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLock(long expireTime, HoldLockListener holdLockListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setLockType((byte) LockTypeEnum.readWriteReentrantLock.getValue());
 		lockOption.setLockOpcode((byte) ReadWriteLockTypeEnum.Write.getOpcode());
@@ -167,7 +167,7 @@ public class WWriteLock implements WLock {
 
 
 	@Override
-	public AcquireLockResult tryAcquireLockUnblocked(int expireTime) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLockUnblocked(long expireTime) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setLockType((byte) LockTypeEnum.readWriteReentrantLock.getValue());
 		lockOption.setLockOpcode((byte) ReadWriteLockTypeEnum.Write.getOpcode());
@@ -178,7 +178,7 @@ public class WWriteLock implements WLock {
 	}
 
 	@Override
-	public AcquireLockResult tryAcquireLockUnblocked(int expireTime, int renewInterval) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLockUnblocked(long expireTime, int renewInterval) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setLockType((byte) LockTypeEnum.readWriteReentrantLock.getValue());
 		lockOption.setLockOpcode((byte) ReadWriteLockTypeEnum.Write.getOpcode());
@@ -199,7 +199,7 @@ public class WWriteLock implements WLock {
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
 	@Override
-	public AcquireLockResult tryAcquireLockUnblocked(int expireTime, HoldLockListener holdLockListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLockUnblocked(long expireTime, HoldLockListener holdLockListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setLockType((byte) LockTypeEnum.readWriteReentrantLock.getValue());
 		lockOption.setLockOpcode((byte) ReadWriteLockTypeEnum.Write.getOpcode());
@@ -211,7 +211,7 @@ public class WWriteLock implements WLock {
 	}
 
 	@Override
-	public AcquireLockResult tryAcquireLockUnblocked(int expireTime, LockExpireListener lockExpireListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLockUnblocked(long expireTime, LockExpireListener lockExpireListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setLockType((byte) LockTypeEnum.readWriteReentrantLock.getValue());
 		lockOption.setLockOpcode((byte) ReadWriteLockTypeEnum.Write.getOpcode());
@@ -223,7 +223,7 @@ public class WWriteLock implements WLock {
 	}
 
 	@Override
-	public AcquireLockResult tryAcquireLockUnblocked(int expireTime, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLockUnblocked(long expireTime, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setLockType((byte) LockTypeEnum.readWriteReentrantLock.getValue());
 		lockOption.setLockOpcode((byte) ReadWriteLockTypeEnum.Write.getOpcode());
@@ -259,11 +259,11 @@ public class WWriteLock implements WLock {
 	}
 
 	@Override
-	public LockResult renewLock(int expireTime) throws ParameterIllegalException {
+	public LockResult renewLock(long expireTime) throws ParameterIllegalException {
 		return renewLock(-1, expireTime);
 	}
 
-	private LockResult renewLock(long lockversion, int expireTime) throws ParameterIllegalException {
+	private LockResult renewLock(long lockversion, long expireTime) throws ParameterIllegalException {
 		long threadID = Thread.currentThread().getId();
 		if (LockPolicy.Process == lockPolicy) {
 			threadID = PROCESS_LOCK_THREAD_ID;
@@ -271,7 +271,7 @@ public class WWriteLock implements WLock {
 		return renewLock(lockversion, threadID, expireTime);
 	}
 
-	private LockResult renewLock(long lockversion, long ownerThreadID, int expireTime) throws ParameterIllegalException {
+	private LockResult renewLock(long lockversion, long ownerThreadID, long expireTime) throws ParameterIllegalException {
 		if (LockPolicy.Process == lockPolicy) {
 			synchronized (lockkey.intern()) {
 				return getRenewLockResult(lockversion, ownerThreadID, expireTime);
@@ -280,11 +280,11 @@ public class WWriteLock implements WLock {
 		return getRenewLockResult(lockversion, ownerThreadID, expireTime);
 	}
 
-	private LockResult getRenewLockResult(long lockversion, long ownerThreadID, int expireTime) throws ParameterIllegalException {
+	private LockResult getRenewLockResult(long lockversion, long ownerThreadID, long expireTime) throws ParameterIllegalException {
 		return this.wlockClient.getLockService().renewLock(lockkey, lockversion, expireTime, ownerThreadID, LockTypeEnum.readWriteReentrantLock.getValue(), ReadWriteLockTypeEnum.Write.getOpcode());
 	}
 
-	protected void dealExpireTime(LockOption lockOption, int expireTime) {
+	protected void dealExpireTime(LockOption lockOption, long expireTime) {
 		if (expireTime > Factor.LOCK_MAX_EXPIRETIME) {
 			lockOption.setExpireTime(Factor.LOCK_MAX_EXPIRETIME);
 			lockOption.setRenewInterval(Factor.HOLD_LOCK_RENEWINTERVAL);

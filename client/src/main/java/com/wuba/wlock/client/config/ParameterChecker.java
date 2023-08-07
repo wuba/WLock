@@ -35,7 +35,7 @@ public class ParameterChecker {
 	 * @param expireTime
 	 * @return
 	 */
-	public static boolean lockExpireTimeCheck(int expireTime) {
+	public static boolean lockExpireTimeCheck(long expireTime) {
 		if (expireTime < Factor.LOCK_MIN_EXPIRETIME || expireTime > Factor.LOCK_MAX_EXPIRETIME) {
 			return false;
 		}
@@ -43,7 +43,7 @@ public class ParameterChecker {
 		return true;
 	}
 	
-	public static boolean lockRenewIntervalCheck(int renewInterval, int expireTime) {
+	public static boolean lockRenewIntervalCheck(int renewInterval, long expireTime) {
 		if (renewInterval == Factor.LOCK_NOT_RENEWINTERVAL) {
 			return true;
 		}
