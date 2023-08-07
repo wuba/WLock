@@ -59,7 +59,7 @@ public class WDistributedLock implements WLock {
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
 	@Override
-	public AcquireLockResult tryAcquireLock(int expireTime , int maxWaitTime) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLock(long expireTime , int maxWaitTime) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(true);
 		lockOption.setExpireTime(expireTime);
@@ -77,7 +77,7 @@ public class WDistributedLock implements WLock {
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
 	@Override
-	public AcquireLockResult tryAcquireLock(int expireTime , int maxWaitTime, int renewInterval) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLock(long expireTime , int maxWaitTime, int renewInterval) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(true);
 		lockOption.setExpireTime(expireTime);
@@ -96,7 +96,7 @@ public class WDistributedLock implements WLock {
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
 	@Override
-	public AcquireLockResult tryAcquireLock(int expireTime , int maxWaitTime, LockExpireListener lockExpireListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLock(long expireTime , int maxWaitTime, LockExpireListener lockExpireListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(true);
 		lockOption.setExpireTime(expireTime);
@@ -115,7 +115,7 @@ public class WDistributedLock implements WLock {
 	 * @return 获取锁结果
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	public AcquireLockResult tryAcquireLock(int expireTime , int maxWaitTime, int weight, LockExpireListener lockExpireListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLock(long expireTime , int maxWaitTime, int weight, LockExpireListener lockExpireListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(true);
 		lockOption.setExpireTime(expireTime);
@@ -137,7 +137,7 @@ public class WDistributedLock implements WLock {
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
 	@Override
-	public AcquireLockResult tryAcquireLock(int expireTime , int maxWaitTime, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLock(long expireTime , int maxWaitTime, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(true);
 		lockOption.setExpireTime(expireTime);
@@ -160,7 +160,7 @@ public class WDistributedLock implements WLock {
 	 * @return 获取锁结果
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	public AcquireLockResult tryAcquireLock(int expireTime , int maxWaitTime, int weight, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLock(long expireTime , int maxWaitTime, int weight, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(true);
 		lockOption.setExpireTime(expireTime);
@@ -181,7 +181,7 @@ public class WDistributedLock implements WLock {
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
 	@Override
-	public AcquireLockResult tryAcquireLock(int expireTime, HoldLockListener holdLockListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLock(long expireTime, HoldLockListener holdLockListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(true);
 		lockOption.setExpireTime(expireTime);
@@ -198,7 +198,7 @@ public class WDistributedLock implements WLock {
 	 * @return 获取锁结果
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	public AcquireLockResult tryAcquireLock(int expireTime, long maxWaitTime, HoldLockListener holdLockListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLock(long expireTime, long maxWaitTime, HoldLockListener holdLockListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(true);
 		lockOption.setExpireTime(expireTime);
@@ -215,7 +215,7 @@ public class WDistributedLock implements WLock {
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
 	@Override
-	public AcquireLockResult tryAcquireLockUnblocked(int expireTime) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLockUnblocked(long expireTime) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(false);
 		lockOption.setExpireTime(expireTime);
@@ -231,7 +231,7 @@ public class WDistributedLock implements WLock {
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
 	@Override
-	public AcquireLockResult tryAcquireLockUnblocked(int expireTime, int renewInterval) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLockUnblocked(long expireTime, int renewInterval) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(false);
 		lockOption.setExpireTime(expireTime);
@@ -248,7 +248,7 @@ public class WDistributedLock implements WLock {
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
 	@Override
-	public AcquireLockResult tryAcquireLockUnblocked(int expireTime, HoldLockListener holdLockListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLockUnblocked(long expireTime, HoldLockListener holdLockListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(false);
 		lockOption.setExpireTime(expireTime);
@@ -265,7 +265,7 @@ public class WDistributedLock implements WLock {
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
 	@Override
-	public AcquireLockResult tryAcquireLockUnblocked(int expireTime, LockExpireListener lockExpireListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLockUnblocked(long expireTime, LockExpireListener lockExpireListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(false);
 		lockOption.setExpireTime(expireTime);
@@ -284,7 +284,7 @@ public class WDistributedLock implements WLock {
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
 	@Override
-	public AcquireLockResult tryAcquireLockUnblocked(int expireTime, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException {
+	public AcquireLockResult tryAcquireLockUnblocked(long expireTime, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(false);
 		lockOption.setExpireTime(expireTime);
@@ -369,7 +369,7 @@ public class WDistributedLock implements WLock {
 	 * @return 返回结果 ，true 请求发送成功， false 请求发送
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	public LockResult watchAndWaitLock(long lockversion, int expireTime, WatchListener watchListener) throws ParameterIllegalException {
+	public LockResult watchAndWaitLock(long lockversion, long expireTime, WatchListener watchListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(true);
 		lockOption.setExpireTime(expireTime);
@@ -387,7 +387,7 @@ public class WDistributedLock implements WLock {
 	 * @return 返回结果 ，true 请求发送成功， false 请求发送
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	public LockResult watchAndWaitLock(long lockversion, int expireTime, int renewInterval, WatchListener watchListener) throws ParameterIllegalException {
+	public LockResult watchAndWaitLock(long lockversion, long expireTime, int renewInterval, WatchListener watchListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(true);
 		lockOption.setExpireTime(expireTime);
@@ -407,7 +407,7 @@ public class WDistributedLock implements WLock {
 	 * @return 返回结果 ，true 请求发送成功， false 请求发送
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	public LockResult watchAndWaitLock(long lockversion, int expireTime, int renewInterval, int weight, WatchListener watchListener) throws ParameterIllegalException {
+	public LockResult watchAndWaitLock(long lockversion, long expireTime, int renewInterval, int weight, WatchListener watchListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(true);
 		lockOption.setExpireTime(expireTime);
@@ -429,7 +429,7 @@ public class WDistributedLock implements WLock {
 	 * @return 返回结果，true 请求发送成功， false 请求发送
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	public LockResult watchAndWaitLock(long lockversion, int expireTime, int renewInterval, int weight, long maxWaitTime, WatchListener watchListener) throws ParameterIllegalException {
+	public LockResult watchAndWaitLock(long lockversion, long expireTime, int renewInterval, int weight, long maxWaitTime, WatchListener watchListener) throws ParameterIllegalException {
 		LockOption lockOption = new LockOption();
 		lockOption.setWaitAcquire(true);
 		lockOption.setExpireTime(expireTime);
@@ -547,7 +547,7 @@ public class WDistributedLock implements WLock {
 	 * @return 返回结果 true 请求发送成功， false 请求发送
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	public LockResult renewLock(int expireTime) throws ParameterIllegalException {
+	public LockResult renewLock(long expireTime) throws ParameterIllegalException {
 		return renewLock(-1, expireTime);
 	}
 
@@ -558,7 +558,7 @@ public class WDistributedLock implements WLock {
 	 * @return 返回结果 true,续约成功, false, 续约失败
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	private LockResult renewLock(long lockversion, int expireTime) throws ParameterIllegalException {
+	private LockResult renewLock(long lockversion, long expireTime) throws ParameterIllegalException {
 		long threadID = Thread.currentThread().getId();
 		if (LockPolicy.Process == lockPolicy) {
 			threadID = PROCESS_LOCK_THREAD_ID;
@@ -574,7 +574,7 @@ public class WDistributedLock implements WLock {
 	 * @return 返回结果 true, 续约成功, false, 续约失败
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	private LockResult renewLock(long lockversion, long ownerThreadID, int expireTime) throws ParameterIllegalException {
+	private LockResult renewLock(long lockversion, long ownerThreadID, long expireTime) throws ParameterIllegalException {
 		if (LockPolicy.Process == lockPolicy) {
 			synchronized (lockkey.intern()){
 				return getRenewLockResult(lockversion, ownerThreadID, expireTime);
@@ -583,7 +583,7 @@ public class WDistributedLock implements WLock {
 		return getRenewLockResult(lockversion, ownerThreadID, expireTime);
 	}
 
-	private LockResult getRenewLockResult(long lockversion, long ownerThreadID, int expireTime) throws ParameterIllegalException {
+	private LockResult getRenewLockResult(long lockversion, long ownerThreadID, long expireTime) throws ParameterIllegalException {
 		return this.wlockClient.getLockService().renewLock(lockkey, lockversion, expireTime, ownerThreadID, LockTypeEnum.reentrantLock.getValue(), 0);
 	}
 
@@ -602,7 +602,7 @@ public class WDistributedLock implements WLock {
 		return lockkey;
 	}
 
-	protected void dealExpireTime(LockOption lockOption , int expireTime){
+	protected void dealExpireTime(LockOption lockOption , long expireTime){
 		if (expireTime > Factor.LOCK_MAX_EXPIRETIME) {
 			lockOption.setExpireTime(Factor.LOCK_MAX_EXPIRETIME);
 			lockOption.setRenewInterval(Factor.HOLD_LOCK_RENEWINTERVAL);

@@ -33,7 +33,7 @@ public interface WLock {
 	 * @return 获取锁结果
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	AcquireLockResult tryAcquireLock(int expireTime, int maxWaitTime) throws ParameterIllegalException;
+	AcquireLockResult tryAcquireLock(long expireTime, int maxWaitTime) throws ParameterIllegalException;
 
 	/**
 	 * 竞争锁，阻塞模式
@@ -44,7 +44,7 @@ public interface WLock {
 	 * @return 获取锁结果
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	AcquireLockResult tryAcquireLock(int expireTime, int maxWaitTime, int renewInterval) throws ParameterIllegalException;
+	AcquireLockResult tryAcquireLock(long expireTime, int maxWaitTime, int renewInterval) throws ParameterIllegalException;
 
 	/**
 	 * 竞争锁，阻塞模式
@@ -55,7 +55,7 @@ public interface WLock {
 	 * @return 获取锁结果
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	AcquireLockResult tryAcquireLock(int expireTime, int maxWaitTime, LockExpireListener lockExpireListener) throws ParameterIllegalException;
+	AcquireLockResult tryAcquireLock(long expireTime, int maxWaitTime, LockExpireListener lockExpireListener) throws ParameterIllegalException;
 
 
 	/**
@@ -69,7 +69,7 @@ public interface WLock {
 	 * @return 获取锁结果
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	AcquireLockResult tryAcquireLock(int expireTime, int maxWaitTime, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException;
+	AcquireLockResult tryAcquireLock(long expireTime, int maxWaitTime, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException;
 
 	/**
 	 *
@@ -80,7 +80,7 @@ public interface WLock {
 	 * @return 获取锁结果
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	AcquireLockResult tryAcquireLock(int expireTime, HoldLockListener holdLockListener) throws ParameterIllegalException;
+	AcquireLockResult tryAcquireLock(long expireTime, HoldLockListener holdLockListener) throws ParameterIllegalException;
 
 	/**
 	 * 竞争锁，所有参数自定义
@@ -98,7 +98,7 @@ public interface WLock {
 	 * @return 获取锁结果
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	AcquireLockResult tryAcquireLockUnblocked(int expireTime) throws ParameterIllegalException;
+	AcquireLockResult tryAcquireLockUnblocked(long expireTime) throws ParameterIllegalException;
 
 	/**
 	 * 竞争锁，非阻塞模式
@@ -108,7 +108,7 @@ public interface WLock {
 	 * @return 获取锁结果
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	AcquireLockResult tryAcquireLockUnblocked(int expireTime, int renewInterval) throws ParameterIllegalException;
+	AcquireLockResult tryAcquireLockUnblocked(long expireTime, int renewInterval) throws ParameterIllegalException;
 
 	/**
 	 *
@@ -119,7 +119,7 @@ public interface WLock {
 	 * @return 获取锁结果
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	AcquireLockResult tryAcquireLockUnblocked(int expireTime, HoldLockListener holdLockListener) throws ParameterIllegalException;
+	AcquireLockResult tryAcquireLockUnblocked(long expireTime, HoldLockListener holdLockListener) throws ParameterIllegalException;
 
 	/**
 	 * 竞争锁，非阻塞模式
@@ -129,7 +129,7 @@ public interface WLock {
 	 * @return 获取锁结果
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	AcquireLockResult tryAcquireLockUnblocked(int expireTime, LockExpireListener lockExpireListener) throws ParameterIllegalException;
+	AcquireLockResult tryAcquireLockUnblocked(long expireTime, LockExpireListener lockExpireListener) throws ParameterIllegalException;
 
 	/**
 	 * 竞争锁，非阻塞模式
@@ -141,7 +141,7 @@ public interface WLock {
 	 * @return 获取锁结果
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	AcquireLockResult tryAcquireLockUnblocked(int expireTime, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException;
+	AcquireLockResult tryAcquireLockUnblocked(long expireTime, int renewInterval, RenewListener renewListener, LockExpireListener lockExpireListener) throws ParameterIllegalException;
 
 
 	/**
@@ -158,7 +158,7 @@ public interface WLock {
 	 * @return 返回结果 true 请求发送成功， false 请求发送
 	 * @throws ParameterIllegalException 参数校验失败异常
 	 */
-	LockResult renewLock(int expireTime) throws ParameterIllegalException;
+	LockResult renewLock(long expireTime) throws ParameterIllegalException;
 
 	/**
 	 * 读取锁当前状态

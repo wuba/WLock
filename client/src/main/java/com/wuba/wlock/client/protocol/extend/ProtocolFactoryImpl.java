@@ -23,12 +23,12 @@ import com.wuba.wlock.client.util.InetAddressUtil;
 import com.wuba.wlock.client.watch.WatchType;
 
 public class ProtocolFactoryImpl implements IProtocolFactory {
-	
+
 	private static ProtocolFactoryImpl instance = new ProtocolFactoryImpl();
-	
+
 	private ProtocolFactoryImpl() {
 	}
-	
+
 	public static ProtocolFactoryImpl getInstance() {
 		return instance;
 	}
@@ -38,7 +38,7 @@ public class ProtocolFactoryImpl implements IProtocolFactory {
 		AcquireLockRequest acquireLockReq = new AcquireLockRequest();
 		acquireLockReq.setProtocolType(ProtocolType.ACQUIRE_LOCK);
 		acquireLockReq.setBlocked((byte) (acquireOption.isWaitAcquire() ? 1 : 0));
-		acquireLockReq.setExpireMills(acquireOption.getExpireTime());
+		acquireLockReq.setExpireMills((int)acquireOption.getExpireTime());
 		acquireLockReq.setFencingToken(acquireOption.getLockversion());
 		acquireLockReq.setHost(InetAddressUtil.getIpInt());
 		acquireLockReq.setLockKey(lockkey);
@@ -62,7 +62,7 @@ public class ProtocolFactoryImpl implements IProtocolFactory {
 		WatchLockRequest watchLockReq = new WatchLockRequest();
 		watchLockReq.setProtocolType(ProtocolType.WATCH_LOCK);
 		watchLockReq.setEventType(watchType.getType());
-		watchLockReq.setExpireTime(watchLockOption.getExpireTime());
+		watchLockReq.setExpireTime((int)watchLockOption.getExpireTime());
 		watchLockReq.setFencingToken(watchLockOption.getLockversion());
 		watchLockReq.setHost(InetAddressUtil.getIpInt());
 		watchLockReq.setLockKey(lockkey);
@@ -126,7 +126,7 @@ public class ProtocolFactoryImpl implements IProtocolFactory {
 
 	@Override
 	public UnWatchLockRequest createUnWatchLockReq(String lockkey, int groupId, String registryKey) {
-		
+
 		return null;
 	}
 
@@ -154,7 +154,7 @@ public class ProtocolFactoryImpl implements IProtocolFactory {
 
 		return eventNotifyResp;
 	}
-	
+
 	@Override
 	public HeartbeatRequest createHeartbeatRequest() {
 		HeartbeatRequest heartbeatReq = new HeartbeatRequest();

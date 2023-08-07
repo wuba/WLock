@@ -44,7 +44,7 @@ public class LockOption {
 	/**
 	 * 锁过期时间，单位毫秒，默认值为5分钟，最大取值5分钟,最小值5秒
 	 */
-	protected int expireTime = Factor.LOCK_MAX_EXPIRETIME;
+	protected long expireTime = Factor.LOCK_MAX_EXPIRETIME;
 	/**
 	 * 锁权重，默认都为1，取值范围[1, 10],权重越高，获取到锁概率越高
 	 */
@@ -77,7 +77,7 @@ public class LockOption {
 	/**
 	 * 真实的过期时间
 	 */
-	protected int realExpireMills;
+	protected long realExpireMills;
 
 	/**
 	 * 真实过期 时间戳
@@ -109,7 +109,7 @@ public class LockOption {
 	 * 获取锁过期时间(并不是实际过期时间戳)
 	 * @return
 	 */
-	public int getExpireTime() {
+	public long getExpireTime() {
 		return expireTime;
 	}
 	
@@ -117,7 +117,7 @@ public class LockOption {
 	 * 设置锁过期时间 
 	 * @param expireTime 单位毫秒，默认值为5分钟，最大取值5分钟,最小值5秒
 	 */
-	public LockOption setExpireTime(int expireTime) {
+	public LockOption setExpireTime(long expireTime) {
 		this.expireTime = expireTime;
 		return this;
 	}
@@ -266,11 +266,11 @@ public class LockOption {
 		this.lockOpcode = lockOpcode;
 	}
 
-	public int getRealExpireMills() {
+	public long getRealExpireMills() {
 		return realExpireMills;
 	}
 
-	public void setRealExpireMills(int realExpireMills) {
+	public void setRealExpireMills(long realExpireMills) {
 		this.realExpireMills = realExpireMills;
 	}
 

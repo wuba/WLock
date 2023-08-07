@@ -260,7 +260,7 @@ public class LockService {
 	 * @return
 	 * @throws ParameterIllegalException
 	 */
-	public LockResult renewLock(String lockkey, long lockVersion, int expireTime, long ownerThreadID, int lockType, int lockOpcode) throws ParameterIllegalException {
+	public LockResult renewLock(String lockkey, long lockVersion, long expireTime, long ownerThreadID, int lockType, int lockOpcode) throws ParameterIllegalException {
 		return renewLock(lockkey, lockVersion, expireTime, ownerThreadID, false, lockType, lockOpcode);
 	}
 
@@ -273,7 +273,7 @@ public class LockService {
 	 * @return
 	 * @throws ParameterIllegalException
 	 */
-	public LockResult renewLock(String lockkey, long lockVersion, int expireTime, long ownerThreadID, boolean isRtouch, int lockType, int lockOpcode) throws ParameterIllegalException {
+	public LockResult renewLock(String lockkey, long lockVersion, long expireTime, long ownerThreadID, boolean isRtouch, int lockType, int lockOpcode) throws ParameterIllegalException {
 		if (!ParameterChecker.lockExpireTimeCheck(expireTime)) {
 			logger.error("renew lock expireTime illegal, max " + Factor.LOCK_MAX_EXPIRETIME + ", you set : " + expireTime);
 			throw new ParameterIllegalException("parameter expireTime illegal.");
@@ -287,7 +287,7 @@ public class LockService {
 			lockVersion = lockContext.getLockVersion();
 		}
 
-		int sexpireTime = isRtouch ? 0 : expireTime;
+		int sexpireTime = isRtouch ? 0 :(int)  expireTime;
 		int timeout = this.wlockClient.getDefaultTimeoutForReq();
 
 		int groupId = this.wlockClient.getRegistryKey().getGroupId(lockkey);
