@@ -24,6 +24,7 @@
         <module>client</module>
         <module>benchmark</module>
         <module>example</module>
+        <module>starter</module>
     </modules>
 
     <packaging>pom</packaging>

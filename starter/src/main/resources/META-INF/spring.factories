@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.wuba.wlock.starter.WLockAutoConfiguration,\
+com.wuba.wlock.starter.aspect.WLockAspect
