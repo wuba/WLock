@@ -1,0 +1,13 @@
+logging:
+  level:
+    root: DEBUG
+
+wlock:
+  enabled: true
+  key: D484FEEF4F6E564920FABD0DE3C58D77
+  registry-server-ip: 127.0.0.1
+  registry-server-port: 22021
+  expire-time: 5000
+  max-wait-time: 5000
+  timeout-for-req: 3000
+  retry-times: 3
