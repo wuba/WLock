@@ -25,12 +25,15 @@ import com.wuba.wlock.common.registry.protocol.response.GetPaxosConfRes;
 import com.wuba.wlock.server.communicate.retrans.RetransServerManager;
 import com.wuba.wlock.server.config.PaxosConfig;
 import com.wuba.wlock.server.config.ServerConfig;
+import com.wuba.wlock.server.wpaxos.SMID;
 import com.wuba.wlock.server.wpaxos.WpaxosService;
+import com.wuba.wpaxos.ProposeResult;
 import com.wuba.wpaxos.comm.NodeInfo;
 import com.wuba.wpaxos.comm.Options;
 import com.wuba.wpaxos.config.PaxosNodeFunctionRet;
 import com.wuba.wpaxos.config.PaxosTryCommitRet;
 import com.wuba.wlock.server.exception.ConfigException;
+import com.wuba.wpaxos.storemachine.SMCtx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -213,6 +216,10 @@ public class GetPaxosConfigHandler extends AbstractPaxosHandler implements IPaxo
 							Thread.sleep(RETRY_DELAY[Math.min(i, RETRY_TIMES)]);
 						} catch (InterruptedException e) {
 						}
+
+						if (addMember == PaxosNodeFunctionRet.Paxos_MembershipOp_NoGid.getRet()) {
+							noGidInit(groupIdx);
+						}
 					} else {
 						break;
 					}
@@ -221,12 +228,21 @@ public class GetPaxosConfigHandler extends AbstractPaxosHandler implements IPaxo
 					logger.error("add member error", e);
 				}
 				if (addMember != PaxosTryCommitRet.PaxosTryCommitRet_OK.getRet() && addMember != PaxosNodeFunctionRet.Paxos_MembershipOp_Add_NodeExist.getRet()) {
-					logger.debug("TEST => add member false : result is " + addMember);
+					logger.error("add member false : result is " + addMember);
 					result = false;
 				}
 			}
 		}
+
 		return result;
+	}
+
+	private void noGidInit(int groupIdx) {
+		logger.info("no gid init propose. groupId: {}", groupIdx);
+		ProposeResult propose = WpaxosService.getInstance().propose(new byte[]{}, groupIdx, new SMCtx(SMID.NULL.getValue(), null));
+		if (propose.getResult() != PaxosTryCommitRet.PaxosTryCommitRet_OK.getRet()) {
+			logger.info("no gid init propose fail. groupId: {} result: {}", groupIdx, propose.getResult());
+		}
 	}
 
 	private boolean deleteMember(int groupIdx, final Set<NodeInfo> deleteNodes) {
@@ -246,6 +262,10 @@ public class GetPaxosConfigHandler extends AbstractPaxosHandler implements IPaxo
 							Thread.sleep(RETRY_DELAY[Math.min(i, RETRY_TIMES)]);
 						} catch (InterruptedException e) {
 						}
+
+						if (deleteMember == PaxosNodeFunctionRet.Paxos_MembershipOp_NoGid.getRet()) {
+							noGidInit(groupIdx);
+						}
 					} else {
 						break;
 					}
@@ -254,6 +274,7 @@ public class GetPaxosConfigHandler extends AbstractPaxosHandler implements IPaxo
 					logger.error("delete member error", e);
 				}
 				if (deleteMember != PaxosTryCommitRet.PaxosTryCommitRet_OK.getRet() && deleteMember != PaxosNodeFunctionRet.Paxos_MembershipOp_Remove_NodeNotExist.getRet()) {
+					logger.error("delete member false : result is " + deleteMember);
 					result = false;
 				}
 			}

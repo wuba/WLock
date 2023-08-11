@@ -102,6 +102,7 @@ public class WpaxosService {
 			smInfo.getSmList().add(new MigrateCommandSM(i, SMID.MIGRATE_COMMAND.getValue(), false));
 			smInfo.getSmList().add(new MigrateChangePointSM(i, SMID.MIGRATE_POINT.getValue(), true));
 			smInfo.getSmList().add(new GroupMetaSM(i, SMID.GROUP_META.getValue(), false));
+			smInfo.getSmList().add(new NullStateMachine(i, SMID.NULL.getValue(), false));
 			options.getGroupSMInfoList().add(smInfo);
 		}
 
