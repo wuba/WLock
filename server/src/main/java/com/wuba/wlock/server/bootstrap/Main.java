@@ -56,8 +56,6 @@ public class Main {
 			}
 		}
 
-		TcpServer.getInstance().start();
-
 		/**
 		 * start wpaxos
 		 */
@@ -68,6 +66,9 @@ public class Main {
 			System.exit(0);
 		}
 		LOGGER.info("paxos start success");
+
+		TcpServer.getInstance().start();
+		LOGGER.info("tcp server start success");
 
 		/**
 		 * init retrans service
