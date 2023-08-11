@@ -24,7 +24,8 @@ public enum SMID {
 	WHEEL_TICK(3),
 	MIGRATE_COMMAND(4),
 	MIGRATE_POINT(5),
-	GROUP_META(6)
+	GROUP_META(6),
+	NULL(7);
 	;
 
 	private int value;
