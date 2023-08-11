@@ -58,7 +58,7 @@ public final class RegistryClient implements IServer {
 		 * 随机选择一个ip
 		 */
 		createChannel();
-		scheduledExecutorService.scheduleAtFixedRate(this::getPaxosConfig, 60000, 5000, TimeUnit.MILLISECONDS);
+		scheduledExecutorService.scheduleWithFixedDelay(this::getPaxosConfig, 60000, 5000, TimeUnit.MILLISECONDS);
 		scheduledExecutorService.scheduleAtFixedRate(() -> {
 			if (PaxosState.isStarted()) {
 				uploadConfig();
