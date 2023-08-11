@@ -601,8 +601,6 @@ public class ReentrantLockService implements ILockService {
 				proposeDeleteKey(watchLockReq, groupId, lockOwnerInfo);
 				trySnatchLock(key, groupId, version, watchLockReq.getRegistryKey());
 				return true;
-			} else if (version > watchLockReq.getFencingToken()) {
-				lockNotify.lockNotifyUpdate2(key, new LockOwner(lockOwnerInfo.getIp(), lockOwnerInfo.getThreadId(), lockOwnerInfo.getPid(), version), groupId);
 			}
 		} catch (LockException e) {
 			LOGGER.error("{} watch lock key : {} error.", watchLockReq.getHost(), key, e);
