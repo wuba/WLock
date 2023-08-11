@@ -114,8 +114,9 @@ public class CheckpointGroupManager implements ICheckpointGroupManager{
 				LOGGER.info("presist checkpoint schedual ,groupid {} smis {} instanceid {}", group, smid, instanceId);
 				checkPoint.presistInstanceId(instanceId);
 
-				if (PaxosState.isStarted(group) && WpaxosService.getInstance().getPaxosNode().getLogStorage().getMinChosenInstanceID(group) < instanceId) {
-					WpaxosService.getInstance().setMinChosenInstanceId(group, instanceId);
+				long lastCheckpointInstanceId = checkPoint.getLastCheckpointInstanceId();
+				if (PaxosState.isStarted(group) && WpaxosService.getInstance().getPaxosNode().getLogStorage().getMinChosenInstanceID(group) < lastCheckpointInstanceId) {
+					WpaxosService.getInstance().setMinChosenInstanceId(group, lastCheckpointInstanceId);
 				}
 			} catch (IOException e) {
 				LOGGER.error("presistCheckpoint error.groupid {} smid {}", group, smid, e);
